@@ -1,8 +1,10 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
+import settings = require('electron-settings');
+
 import path = require('path');
 import url = require('url');
-import fs = require('fs');
-import settings = require('electron-settings');
+
+import { Upload } from './service/qiniu';
 
 let win: Electron.BrowserWindow;
 
@@ -29,18 +31,41 @@ function createWindow() {
         win = null;
     });
 
+    // 设置相关事件
+
+    /**
+     * 保存设置
+     */
     ipcMain.on('save-setting', (e, args) => {
         settings.set('certificate', args);
     });
 
+    /**
+     * 清空设置
+     */
     ipcMain.on('clear-setting', () => {
-        fs.unlinkSync(settings.file());
+        settings.deleteAll();
     });
 
+    /**
+     * 读取设置
+     */
     ipcMain.on('load-setting', (e) => {
         if (settings.has('certificate')) {
             const setting = settings.get('certificate');
             e.sender.send('load-setting', setting);
+        }
+    });
+
+    // 获取上传文件token
+    ipcMain.on('get-token', (e) => {
+        if (settings.has('certificate')) {
+            const { accessKey, secretKey, scope } = settings.get('certificate');
+            const upload = new Upload(accessKey, secretKey, scope);
+
+            e.sender.send('get-token', upload.getUploadToken());
+        } else {
+            e.sender.send('error', '请先设置密钥后在使用!');
         }
     });
 }

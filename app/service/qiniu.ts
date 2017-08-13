@@ -1,16 +1,28 @@
-import qn = require('qiniu');
+import qiniu = require('qiniu');
+import settings = require('electron-settings');
 
-// const ak = 'WMbAgSLSSfhK3AYmlg72dpy52wT5pvuT_eD0Th5L';
-// const sk = 'QrqnwDD6MG3MLD4pRkGbiyECYrwop9Qx9csU6oWR';
-// const mac = new qn.auth.digest.Mac(ak, sk);
+export class Upload {
+    private ak: string;
+    private sk: string;
+    private scope: string;
 
-// const bucket = 'lleohao';
+    private putPolicy;
+    private mac
 
-// const options: qn.rs.PutPolicyOptions = {
-//     scope: bucket,
-//     expires: 7200
-// };
+    constructor(ak: string, sk: string, scope: string) {
+        this.ak = ak;
+        this.sk = sk;
+        this.scope = scope;
 
-// const putPolicy = new qn.rs.PutPolicy(options);
-// const uploadToken = putPolicy.uploadToken();
+        this.mac = new qiniu.auth.digest.Mac(this.ak, this.sk);
 
+        this.putPolicy = new qiniu.rs.PutPolicy({
+            scope: this.scope,
+            expires: 3600
+        });
+    }
+
+    getUploadToken() {
+        return this.putPolicy.uploadToken(this.mac);
+    }
+}

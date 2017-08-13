@@ -1,13 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// const ak = 'WMbAgSLSSfhK3AYmlg72dpy52wT5pvuT_eD0Th5L';
-// const sk = 'QrqnwDD6MG3MLD4pRkGbiyECYrwop9Qx9csU6oWR';
-// const mac = new qn.auth.digest.Mac(ak, sk);
-// const bucket = 'lleohao';
-// const options: qn.rs.PutPolicyOptions = {
-//     scope: bucket,
-//     expires: 7200
-// };
-// const putPolicy = new qn.rs.PutPolicy(options);
-// const uploadToken = putPolicy.uploadToken();
+var qiniu = require("qiniu");
+var Upload = (function () {
+    function Upload(ak, sk, scope) {
+        this.ak = ak;
+        this.sk = sk;
+        this.scope = scope;
+        this.mac = new qiniu.auth.digest.Mac(this.ak, this.sk);
+        this.putPolicy = new qiniu.rs.PutPolicy({
+            scope: this.scope,
+            expires: 3600
+        });
+    }
+    Upload.prototype.getUploadToken = function () {
+        return this.putPolicy.uploadToken(this.mac);
+    };
+    return Upload;
+}());
+exports.Upload = Upload;
 //# sourceMappingURL=qiniu.js.map
