@@ -153,8 +153,42 @@ body {
     padding: 16px;
 }
 
-.wrap {
+.nav {
+    padding-left: 16px;
+    margin-bottom: 16px;
+    height: 48px;
+    line-height: 48px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.nav ul {
     height: 100%;
+    overflow: hidden;
+}
+
+.nav ul li {
+    float: left;
+}
+
+.nav ul li>a {
+    display: inline-block;
+    margin-right: 8px;
+    text-decoration: none;
+    color: #333;
+}
+
+.nav ul li>a.active {
+    color: #000;
+    font-weight: bold;
+}
+
+.nav ul li>a:hover {
+    text-decoration: underline;
+}
+
+.wrap {
+    height: calc(100% - 64px);
     background-color: #fff;
     border-radius: 4px;
     padding: 16px;
