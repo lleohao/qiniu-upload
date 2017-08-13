@@ -56,18 +56,6 @@ function createWindow() {
             e.sender.send('load-setting', setting);
         }
     });
-
-    // 获取上传文件token
-    ipcMain.on('get-token', (e) => {
-        if (settings.has('certificate')) {
-            const { accessKey, secretKey, scope } = settings.get('certificate');
-            const upload = new Upload(accessKey, secretKey, scope);
-
-            e.sender.send('get-token', upload.getUploadToken());
-        } else {
-            e.sender.send('error', '请先设置密钥后在使用!');
-        }
-    });
 }
 
 app.on('ready', createWindow);

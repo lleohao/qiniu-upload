@@ -4,10 +4,6 @@ remote.ipcRenderer.on('error', (e, message) => {
     alert(message);
 });
 
-remote.ipcRenderer.on('get-token', (e, token) => {
-    console.log('UploadToken', token);
-});
-
 const upLoadBtn = document.getElementById('uploadBtn');
 
 const upload = function () {
