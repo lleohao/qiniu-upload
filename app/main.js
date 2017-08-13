@@ -3,19 +3,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var path = require("path");
 var url = require("url");
+var settings = require("electron-settings");
 var win;
 function createWindow() {
     win = new electron_1.BrowserWindow({ width: 800, height: 600 });
-    var file = url.format({
-        pathname: path.join(__dirname, 'index.html'),
+    var webContents = win.webContents;
+    win.loadURL(url.format({
+        pathname: path.join(__dirname, 'pages/index/index.html'),
         protocol: 'file:',
         slashes: true
-    });
-    console.log(file);
-    win.loadURL(file);
-    win.webContents.openDevTools();
+    }));
+    webContents.openDevTools();
     win.on('closed', function () {
         win = null;
+    });
+    webContents.on('did-finish-load', function () {
+        if (!settings.has('certificate')) {
+            webContents.send('setCertificate');
+        }
     });
 }
 electron_1.app.on('ready', createWindow);

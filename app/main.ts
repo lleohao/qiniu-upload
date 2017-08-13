@@ -1,27 +1,32 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path = require('path');
 import url = require('url');
+import settings = require('electron-settings');
 
 let win: Electron.BrowserWindow;
 
 function createWindow() {
     win = new BrowserWindow({ width: 800, height: 600 });
+    const webContents = win.webContents;
 
-    const file = url.format({
-        pathname: path.join(__dirname, 'index.html'),
+    win.loadURL(url.format({
+        pathname: path.join(__dirname, 'pages/index/index.html'),
         protocol: 'file:',
         slashes: true
-    });
-    console.log(file);
-    win.loadURL(file);
+    }));
 
-    win.webContents.openDevTools();
+    webContents.openDevTools();
 
     win.on('closed', () => {
         win = null;
     });
-}
 
+    webContents.on('did-finish-load', () => {
+        if (!settings.has('certificate')) {
+            webContents.send('setCertificate');
+        }
+    });
+}
 
 app.on('ready', createWindow);
 
