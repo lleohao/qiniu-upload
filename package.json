@@ -2,7 +2,7 @@
     "name": "dragUpload-qiniu",
     "version": "0.1.0",
     "description": "qiniu drag upload app",
-    "main": "main.js",
+    "main": "app/main.js",
     "scripts": {
         "build": "tsc",
         "dev": "tsc -w",
