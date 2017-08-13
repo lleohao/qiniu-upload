@@ -6,11 +6,18 @@ import settings = require('electron-settings');
 let win: Electron.BrowserWindow;
 
 function createWindow() {
-    win = new BrowserWindow({ width: 800, height: 600 });
+    win = new BrowserWindow({ width: 800, height: 600, title: '七牛文件拖住上传工具' });
     const webContents = win.webContents;
 
+    let firstUrl;
+    if (!settings.has('certificate')) {
+        firstUrl = path.join(__dirname, 'pages/setting/setting.html');
+    } else {
+        firstUrl = path.join(__dirname, 'pages/index/index.html');
+    }
+
     win.loadURL(url.format({
-        pathname: path.join(__dirname, 'pages/index/index.html'),
+        pathname: firstUrl,
         protocol: 'file:',
         slashes: true
     }));
@@ -21,10 +28,12 @@ function createWindow() {
         win = null;
     });
 
-    webContents.on('did-finish-load', () => {
-        if (!settings.has('certificate')) {
-            webContents.send('setCertificate');
-        }
+    ipcMain.on('save-setting', (e, args) => {
+        settings.set('certificate', args);
+    });
+
+    ipcMain.on('clear-setting', () => {
+        settings.clearPath('Settings');
     });
 }
 

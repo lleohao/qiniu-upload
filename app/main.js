@@ -6,10 +6,17 @@ var url = require("url");
 var settings = require("electron-settings");
 var win;
 function createWindow() {
-    win = new electron_1.BrowserWindow({ width: 800, height: 600 });
+    win = new electron_1.BrowserWindow({ width: 800, height: 600, title: '七牛文件拖住上传工具' });
     var webContents = win.webContents;
+    var firstUrl;
+    if (!settings.has('certificate')) {
+        firstUrl = path.join(__dirname, 'pages/setting/setting.html');
+    }
+    else {
+        firstUrl = path.join(__dirname, 'pages/index/index.html');
+    }
     win.loadURL(url.format({
-        pathname: path.join(__dirname, 'pages/index/index.html'),
+        pathname: firstUrl,
         protocol: 'file:',
         slashes: true
     }));
@@ -17,10 +24,11 @@ function createWindow() {
     win.on('closed', function () {
         win = null;
     });
-    webContents.on('did-finish-load', function () {
-        if (!settings.has('certificate')) {
-            webContents.send('setCertificate');
-        }
+    electron_1.ipcMain.on('save-setting', function (e, args) {
+        settings.set('certificate', args);
+    });
+    electron_1.ipcMain.on('clear-setting', function () {
+        settings.clearPath('Settings');
     });
 }
 electron_1.app.on('ready', createWindow);
