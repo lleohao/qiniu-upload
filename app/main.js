@@ -22,7 +22,6 @@ function createWindow() {
         protocol: 'file:',
         slashes: true
     }));
-    webContents.openDevTools();
     win.on('closed', function () {
         win = null;
     });

@@ -6,7 +6,9 @@
     "scripts": {
         "build": "tsc",
         "dev": "tsc -w",
-        "start": "./node_modules/.bin/electron ."
+        "start": "./node_modules/.bin/electron .",
+        "pack": "electron-builder -m --dir",
+        "dist": "electron-builder -m"
     },
     "repository": "git@github.com:lleohao/dragUpload-qiniu.git",
     "author": "lleohao <lleohao@hotmail.com>",
@@ -14,11 +16,18 @@
     "devDependencies": {
         "@types/node": "^8.0.20",
         "electron": "1.7.5",
+        "electron-builder": "^19.20.1",
         "qiniu": "^7.0.6",
         "typescript": "^2.4.2"
     },
     "dependencies": {
         "electron-settings": "^3.1.1",
         "es-restful": "^2.1.0"
+    },
+    "build": {
+        "appId": "com.lleohao.dragUpload",
+        "mac": {
+            "category": "public.app-category.productivity"
+        }
     }
 }
