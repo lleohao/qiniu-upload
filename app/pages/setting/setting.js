@@ -22,9 +22,19 @@ const saveSetting = function (e) {
 };
 
 const cleanSetting = function (e) {
-    e.preventDefault();
     remote.ipcRenderer.send('clear-setting');
-}
+};
+
+const loadSetting = function () {
+    remote.ipcRenderer.send('load-setting');
+    remote.ipcRenderer.on('load-setting', (e, message) => {
+        akIpt.value = message.accessKey;
+        skIpt.value = message.secretKey;
+        scopeIpt.value = message.scope;
+    });
+};
 
 saveBtn.addEventListener('click', saveSetting);
 cleanBtn.addEventListener('click', cleanSetting);
+
+window.addEventListener('load', loadSetting);

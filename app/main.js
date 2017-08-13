@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var electron_1 = require("electron");
 var path = require("path");
 var url = require("url");
+var fs = require("fs");
 var settings = require("electron-settings");
 var win;
 function createWindow() {
@@ -28,7 +29,13 @@ function createWindow() {
         settings.set('certificate', args);
     });
     electron_1.ipcMain.on('clear-setting', function () {
-        settings.clearPath('Settings');
+        fs.unlinkSync(settings.file());
+    });
+    electron_1.ipcMain.on('load-setting', function (e) {
+        if (settings.has('certificate')) {
+            var setting = settings.get('certificate');
+            e.sender.send('load-setting', setting);
+        }
     });
 }
 electron_1.app.on('ready', createWindow);

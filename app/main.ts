@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import path = require('path');
 import url = require('url');
+import fs = require('fs');
 import settings = require('electron-settings');
 
 let win: Electron.BrowserWindow;
@@ -33,7 +34,14 @@ function createWindow() {
     });
 
     ipcMain.on('clear-setting', () => {
-        settings.clearPath('Settings');
+        fs.unlinkSync(settings.file());
+    });
+
+    ipcMain.on('load-setting', (e) => {
+        if (settings.has('certificate')) {
+            const setting = settings.get('certificate');
+            e.sender.send('load-setting', setting);
+        }
     });
 }
 
