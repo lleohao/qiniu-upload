@@ -1,0 +1,7 @@
+.field:last-child {
+    text-align: right;
+}
+
+.form .field>input:invalid {
+    border-color: #e93f3c;
+}

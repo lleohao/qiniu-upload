@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="./setting.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <nav class="nav">
+        <ul>
+            <li><a href="../index/index.html">上传</a></li>
+            <li><a class="active" href="../setting/setting.html">设置</a></li>
+        </ul>
+    </nav>
+    <div class="wrap setting">
+        <p class="info">下列配置信息可以七牛的个人中心找到</p>
+
+        <form action="#" class="form setting-form">
+            <div class="field">
+                <label for="ak">accessKey</label><input type="text" required id="ak" placeholder="请输入accessKey">
+            </div>
+            <div class="field">
+                <label for="sk">secretKey</label><input type="text" required id="sk" placeholder="请输入secretKey">
+            </div>
+            <div class="field">
+                <label for="scope">空间名称</label><input type="text" required id="scope" placeholder="请输入空间名称">
+            </div>
+            <div class="field">
+                <label for="domain">空间域名</label><input type="text" required id="domain" placeholder="请输入空间域名">
+            </div>
+            <div class="field">
+                <button type="submit" class="btn" id="save">保存设置</button>
+                <button type="reset" class="btn" id="clean">清空配置</button>
+            </div>
+        </form>
+
+    </div>
+    <script src="./setting.js"></script>
+</body>
+
+</html>
