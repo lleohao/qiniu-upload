@@ -5,6 +5,8 @@ const cleanBtn = document.getElementById('clean');
 const akIpt = document.getElementById('ak');
 const skIpt = document.getElementById('sk');
 const scopeIpt = document.getElementById('scope');
+const domainIpt = document.getElementById('domain');
+
 
 const saveSetting = function (e) {
     e.preventDefault();
@@ -12,7 +14,8 @@ const saveSetting = function (e) {
         const certificate = {
             accessKey: akIpt.value,
             secretKey: skIpt.value,
-            scope: scopeIpt.value
+            scope: scopeIpt.value,
+            domain: domainIpt.value
         }
 
         remote.ipcRenderer.send('save-setting', certificate);
@@ -31,6 +34,7 @@ const loadSetting = function () {
         akIpt.value = message.accessKey;
         skIpt.value = message.secretKey;
         scopeIpt.value = message.scope;
+        domainIpt.value = message.domain;
     });
 };
 
