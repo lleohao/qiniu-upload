@@ -4,9 +4,11 @@ var electron_1 = require("electron");
 var settings = require("electron-settings");
 var path = require("path");
 var url = require("url");
+var qiniu_1 = require("./service/qiniu");
 var win;
+var uploadClient;
 function createWindow() {
-    win = new electron_1.BrowserWindow({ width: 800, height: 600, title: '七牛文件拖住上传工具' });
+    win = new electron_1.BrowserWindow({ width: 800, height: 640, title: '七牛文件拖住上传工具', minHeight: 640 });
     var webContents = win.webContents;
     var firstUrl;
     if (!settings.has('certificate')) {
@@ -46,7 +48,34 @@ function createWindow() {
             e.sender.send('load-setting', setting);
         }
     });
+    /**
+     * 上传文件
+     */
+    electron_1.ipcMain.on('upload-file', function (e, path, filename) {
+        if (settings.has('certificate')) {
+            var _a = settings.get('certificate'), accessKey = _a.accessKey, secretKey = _a.secretKey, scope = _a.scope, domain_1 = _a.domain;
+            if (!uploadClient) {
+                uploadClient = new qiniu_1.Upload(accessKey, secretKey, scope);
+            }
+            uploadClient.uploadFile(path, filename, function (err, body, code) {
+                if (err !== null) {
+                    e.sender.send('error', err);
+                    return;
+                }
+                if (code !== undefined) {
+                    e.sender.send('error', "\u4E0A\u4F20\u5931\u8D25, http code: " + code + ", " + body);
+                    return;
+                }
+                var url = domain_1 + '/' + body.key;
+                e.sender.send('upload-success', url);
+            });
+        }
+        else {
+            e.sender.send('error', '必须先设置密钥才能使用!');
+        }
+    });
 }
+;
 electron_1.app.on('ready', createWindow);
 electron_1.app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') {

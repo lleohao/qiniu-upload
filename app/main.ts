@@ -7,9 +7,10 @@ import url = require('url');
 import { Upload } from './service/qiniu';
 
 let win: Electron.BrowserWindow;
+let uploadClient: Upload;
 
 function createWindow() {
-    win = new BrowserWindow({ width: 800, height: 600, title: '七牛文件拖住上传工具' });
+    win = new BrowserWindow({ width: 800, height: 640, title: '七牛文件拖住上传工具', minHeight: 640 });
     const webContents = win.webContents;
 
     let firstUrl;
@@ -56,7 +57,39 @@ function createWindow() {
             e.sender.send('load-setting', setting);
         }
     });
-}
+
+    /**
+     * 上传文件
+     */
+    ipcMain.on('upload-file', (e, path, filename) => {
+        if (settings.has('certificate')) {
+            const { accessKey, secretKey, scope, domain } = settings.get('certificate');
+            if (!uploadClient) {
+                uploadClient = new Upload(accessKey, secretKey, scope);
+            }
+
+            uploadClient.uploadFile(path, filename, (err, body, code) => {
+                if (err !== null) {
+                    e.sender.send('error', err);
+                    return;
+                }
+
+                if (code !== undefined) {
+                    e.sender.send('error', `上传失败, http code: ${code}, ${body}`);
+                    return;
+                }
+
+                const url = domain + '/' + body.key;
+                e.sender.send('upload-success', url);
+            });
+
+
+
+        } else {
+            e.sender.send('error', '必须先设置密钥才能使用!');
+        }
+    });
+};
 
 app.on('ready', createWindow);
 
@@ -70,4 +103,4 @@ app.on('activate', () => {
     if (win === null) {
         createWindow();
     }
-})
+});
