@@ -1,15 +1,20 @@
 {
-  "name": "dragUpload-qiniu",
-  "version": "0.1.0",
-  "description": "qiniu drag upload app",
-  "main": "index.js",
-  "repository": "git@github.com:lleohao/dragUpload-qiniu.git",
-  "author": "lleohao <lleohao@hotmail.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/node": "^8.0.20",
-    "electron": "1.7.5",
-    "qiniu": "^7.0.6",
-    "typescript": "^2.4.2"
-  }
+    "name": "dragUpload-qiniu",
+    "version": "0.1.0",
+    "description": "qiniu drag upload app",
+    "main": "main.js",
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc -w",
+        "start": "./node_modules/.bin/electron ."
+    },
+    "repository": "git@github.com:lleohao/dragUpload-qiniu.git",
+    "author": "lleohao <lleohao@hotmail.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/node": "^8.0.20",
+        "electron": "1.7.5",
+        "qiniu": "^7.0.6",
+        "typescript": "^2.4.2"
+    }
 }
