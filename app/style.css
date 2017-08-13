@@ -136,3 +136,74 @@ a {
     vertical-align: baseline;
     background: transparent;
 }
+
+
+/* custom styls */
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: 'microsoft yahei ui', 'microsoft yahei', PingFangSC-Light, 'helvetica neue', 'hiragino sans gb', arial, simsun, sans-serif;
+    font-size: 16px;
+    background-color: #f8f8f8;
+    padding: 16px;
+}
+
+.wrap {
+    height: 100%;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 16px;
+}
+
+.info {
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+
+.form .field {
+    padding: .75rem 1.25rem;
+}
+
+.form .field>label {
+    display: block;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.form .field>input {
+    width: 100%;
+    border: 1px solid #efefef;
+    background: #fff;
+    border-radius: 2px;
+    font-size: 14px;
+    padding: 8px 16px;
+}
+
+.form .field>input:hover {
+    border-color: #e3e3e3;
+}
+
+.btn {
+    cursor: pointer;
+    text-align: center;
+    padding: 6px 16px;
+    border: 1px solid #0167c6;
+    color: #fff;
+    background: #0174df;
+    font-size: 1rem;
+}
+
+.btn:hover {
+    border-color: #0181f8;
+    background: #0181f8;
+}

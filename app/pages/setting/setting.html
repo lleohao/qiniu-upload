@@ -10,7 +10,26 @@
     <title>Document</title>
 </head>
 
-<body>index
+<body>
+    <div class="wrap setting">
+        <p class="info">必须先设置密钥才能使用</p>
+
+        <form action="#" class="form setting-form">
+            <div class="field">
+                <label for="ak">accessKey</label><input type="text" required id="ak" placeholder="请输入accessKey">
+            </div>
+            <div class="field">
+                <label for="sk">secretKey</label><input type="text" required id="sk" placeholder="请输入secretKey">
+            </div>
+            <div class="field">
+                <label for="scope">空间名称</label><input type="text" required id="scope" placeholder="请输入空间名称">
+            </div>
+            <div class="field">
+                <button type="submit" class="btn" id="save">保存设置</button>
+            </div>
+        </form>
+
+    </div>
     <script src="./setting.js"></script>
 </body>
 
