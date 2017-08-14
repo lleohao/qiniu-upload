@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 import settings = require('electron-settings');
 
 import path = require('path');
@@ -19,6 +19,8 @@ function createWindow() {
     } else {
         firstUrl = path.join(__dirname, 'pages/index/index.html');
     }
+
+    win.webContents.openDevTools();
 
     win.loadURL(url.format({
         pathname: firstUrl,
@@ -87,6 +89,29 @@ function createWindow() {
             e.sender.send('error', '必须先设置密钥才能使用!');
         }
     });
+
+    var template = [{
+        label: "Application",
+        submenu: [
+            { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
+            { type: "separator" },
+            { label: "Quit", accelerator: "Command+Q", click: function () { app.quit(); } }
+        ]
+    }, {
+        label: "Edit",
+        submenu: [
+            { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+            { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+            { type: "separator" },
+            { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+            { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+            { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+            { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+        ]
+    }
+    ];
+
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template as Electron.MenuItemConstructorOptions[]));
 };
 
 app.on('ready', createWindow);

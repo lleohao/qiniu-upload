@@ -17,6 +17,7 @@ function createWindow() {
     else {
         firstUrl = path.join(__dirname, 'pages/index/index.html');
     }
+    win.webContents.openDevTools();
     win.loadURL(url.format({
         pathname: firstUrl,
         protocol: 'file:',
@@ -73,6 +74,27 @@ function createWindow() {
             e.sender.send('error', '必须先设置密钥才能使用!');
         }
     });
+    var template = [{
+            label: "Application",
+            submenu: [
+                { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
+                { type: "separator" },
+                { label: "Quit", accelerator: "Command+Q", click: function () { electron_1.app.quit(); } }
+            ]
+        }, {
+            label: "Edit",
+            submenu: [
+                { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+                { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+                { type: "separator" },
+                { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+                { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+                { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+                { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+            ]
+        }
+    ];
+    electron_1.Menu.setApplicationMenu(electron_1.Menu.buildFromTemplate(template));
 }
 ;
 electron_1.app.on('ready', createWindow);
