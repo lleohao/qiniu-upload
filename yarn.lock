@@ -573,10 +573,6 @@ error-ex@^1.2.0:
   dependencies:
     is-arrayish "^0.2.1"
 
-es-restful@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/es-restful/-/es-restful-2.1.0.tgz#375a6ed01426871d2d709cae687840d006e33dcc"
-
 es6-promise@^4.0.5:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.1.1.tgz#8811e90915d9a0dba36274f0b242dbda78f9c92a"

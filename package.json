@@ -1,5 +1,5 @@
 {
-    "name": "dragUpload-qiniu",
+    "name": "dragUpload",
     "version": "0.1.0",
     "description": "qiniu drag upload app",
     "main": "app/main.js",
@@ -17,12 +17,11 @@
         "@types/node": "^8.0.20",
         "electron": "1.7.5",
         "electron-builder": "^19.20.1",
-        "qiniu": "^7.0.6",
         "typescript": "^2.4.2"
     },
     "dependencies": {
         "electron-settings": "^3.1.1",
-        "es-restful": "^2.1.0"
+        "qiniu": "^7.0.6"
     },
     "build": {
         "appId": "com.lleohao.dragUpload",
