@@ -17,7 +17,6 @@ function createWindow() {
     else {
         firstUrl = path.join(__dirname, 'pages/index/index.html');
     }
-    win.webContents.openDevTools();
     win.loadURL(url.format({
         pathname: firstUrl,
         protocol: 'file:',

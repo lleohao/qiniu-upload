@@ -1,6 +1,6 @@
 {
     "name": "dragUpload",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "qiniu drag upload app",
     "main": "app/main.js",
     "scripts": {
