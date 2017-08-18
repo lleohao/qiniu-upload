@@ -1,5 +1,5 @@
-import qiniu = require('qiniu');
-import settings = require('electron-settings');
+import * as qiniu from 'qiniu';
+import * as settings from 'electron-settings';
 
 export class Upload {
     private putPolicy;

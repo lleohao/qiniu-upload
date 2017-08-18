@@ -1,8 +1,7 @@
+import * as settings from 'electron-settings';
+import * as path from 'path';
+import * as url from 'url';
 import { app, BrowserWindow, ipcMain, Menu } from 'electron';
-import settings = require('electron-settings');
-
-import path = require('path');
-import url = require('url');
 
 import { Upload } from './service/qiniu';
 
@@ -59,14 +58,14 @@ function createWindow() {
     /**
      * 上传文件
      */
-    ipcMain.on('upload-file', (e, path, filename) => {
+    ipcMain.on('upload-file', (e, filePath, filename) => {
         if (settings.has('certificate')) {
             const { accessKey, secretKey, scope, domain } = settings.get('certificate');
             if (!uploadClient) {
                 uploadClient = new Upload(accessKey, secretKey, scope);
             }
 
-            uploadClient.uploadFile(path, filename, (err, body, code) => {
+            uploadClient.uploadFile(filePath, filename, (err, body, code) => {
                 if (err !== null) {
                     e.sender.send('error', err);
                     return;
@@ -77,8 +76,8 @@ function createWindow() {
                     return;
                 }
 
-                const url = domain + '/' + body.key;
-                e.sender.send('upload-success', url);
+                const fileURl = domain + '/' + body.key;
+                e.sender.send('upload-success', fileURl);
             });
 
 
@@ -88,29 +87,29 @@ function createWindow() {
         }
     });
 
-    var template = [{
-        label: "Application",
+    const template = [{
+        label: 'Application',
         submenu: [
-            { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
-            { type: "separator" },
-            { label: "Quit", accelerator: "Command+Q", click: function () { app.quit(); } }
+            { label: 'About Application', selector: 'orderFrontStandardAboutPanel:' },
+            { type: 'separator' },
+            { label: 'Quit', accelerator: 'Command+Q', click: function () { app.quit(); } }
         ]
     }, {
-        label: "Edit",
+        label: 'Edit',
         submenu: [
-            { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
-            { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
-            { type: "separator" },
-            { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
-            { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
-            { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
-            { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+            { label: 'Undo', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
+            { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
+            { type: 'separator' },
+            { label: 'Cut', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
+            { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
+            { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
+            { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' }
         ]
     }
     ];
 
     Menu.setApplicationMenu(Menu.buildFromTemplate(template as Electron.MenuItemConstructorOptions[]));
-};
+}
 
 app.on('ready', createWindow);
 
