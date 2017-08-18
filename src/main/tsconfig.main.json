@@ -3,11 +3,7 @@
     "compilerOptions": {
         "outDir": "../../out-tsc/main",
         "baseUrl": "./",
-        "module": "es2015",
-        "types": []
-    },
-    "exclude": [
-        "test.ts",
-        "**/*.spec.ts"
-    ]
+        "module": "commonjs",
+        "target": "es5"
+    }
 }
