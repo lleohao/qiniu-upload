@@ -5,7 +5,7 @@
     },
     "apps": [{
         "root": "src/renderer",
-        "outDir": "dist",
+        "outDir": "out/dist",
         "assets": [
             "assets",
             "favicon.ico"
