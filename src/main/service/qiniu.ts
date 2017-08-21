@@ -42,7 +42,7 @@ export class Upload {
             if (respErr) {
                 callback(respErr);
             }
-            if (respInfo.statusCode == 200) {
+            if (respInfo.statusCode === 200) {
                 callback(null, respBody);
             } else {
                 callback(null, respBody, respInfo.statusCode);
