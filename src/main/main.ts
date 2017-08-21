@@ -80,8 +80,6 @@ function createWindow() {
                 e.sender.send('upload-success', fileURl);
             });
 
-
-
         } else {
             e.sender.send('error', '必须先设置密钥才能使用!');
         }

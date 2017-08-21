@@ -4,8 +4,9 @@
     "license": "MIT",
     "scripts": {
         "ng": "ng",
-        "start": "ng serve",
-        "build": "ng build"
+        "watch:main": "tsc -p ./src/main/tsconfig.main.json -w",
+        "watch:renderer": "ng serve",
+        "start": "NODE_ENV=development nodemon --watch out --exec './node_modules/.bin/electron' ./out/main.js"
     },
     "private": true,
     "dependencies": {
