@@ -4,7 +4,7 @@ import * as url from 'url';
 import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 
 import { Upload } from './service/qiniu';
-import { isDev } from './shared';
+import { isDev } from './utils';
 
 let mainWin: Electron.BrowserWindow;
 let uploadClient: Upload;
@@ -17,7 +17,7 @@ function createWindow() {
     });
     const webContents = mainWin.webContents;
 
-    if (isDev) {
+    if (isDev()) {
         mainWin.loadURL('http://127.0.0.1:4200');
         mainWin.webContents.openDevTools();
     } else {
