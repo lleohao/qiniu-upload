@@ -4,29 +4,29 @@ import * as url from 'url';
 import { app, BrowserWindow, ipcMain, Menu } from 'electron';
 
 import { Upload } from './service/qiniu';
+import { isDev } from './shared';
 
-let win: Electron.BrowserWindow;
+let mainWin: Electron.BrowserWindow;
 let uploadClient: Upload;
 
 function createWindow() {
-    win = new BrowserWindow({ width: 800, height: 640, title: '七牛文件拖住上传工具', minHeight: 640 });
-    const webContents = win.webContents;
+    mainWin = new BrowserWindow({
+        width: 800,
+        height: 640,
+        title: '七牛上传工具'
+    });
+    const webContents = mainWin.webContents;
 
-    let firstUrl;
-    if (!settings.has('certificate')) {
-        firstUrl = path.join(__dirname, 'pages/setting/setting.html');
+    if (isDev) {
+        mainWin.loadURL('http://127.0.0.1:4200');
+        mainWin.webContents.openDevTools();
     } else {
-        firstUrl = path.join(__dirname, 'pages/index/index.html');
+        mainWin.loadURL(`file://${path.resolve(__dirname, 'dist/index.html')}`);
     }
 
-    win.loadURL(url.format({
-        pathname: firstUrl,
-        protocol: 'file:',
-        slashes: true
-    }));
 
-    win.on('closed', () => {
-        win = null;
+    mainWin.on('closed', () => {
+        mainWin = null;
     });
 
     // 设置相关事件
@@ -85,6 +85,7 @@ function createWindow() {
         }
     });
 
+
     const template = [{
         label: 'Application',
         submenu: [
@@ -109,6 +110,7 @@ function createWindow() {
     Menu.setApplicationMenu(Menu.buildFromTemplate(template as Electron.MenuItemConstructorOptions[]));
 }
 
+
 app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
@@ -118,7 +120,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-    if (win === null) {
+    if (mainWin === null) {
         createWindow();
     }
 });
