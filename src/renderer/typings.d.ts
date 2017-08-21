@@ -1,5 +1,6 @@
 /* SystemJS module definition */
 declare var module: NodeModule;
 interface NodeModule {
-  id: string;
+    id: string;
 }
+declare var electron: Electron.AllElectron;
