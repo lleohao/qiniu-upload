@@ -2,3 +2,34 @@
 
 @import "assets/iconfont/iconfont.css";
 @import "assets/reset.css";
+.wrap {
+    height: calc(100% - 48px);
+    background-color: #fff;
+    padding: 0 16px 16px;
+}
+
+.info {
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+
+.btn {
+    padding: 6px 16px;
+    border: 1px solid #0167c6;
+    border-radius: 2px;
+    color: #fff;
+    background: #0174df;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.btn:hover {
+    border-color: #0181f8;
+    background: #0181f8;
+}

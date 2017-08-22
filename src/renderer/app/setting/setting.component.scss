@@ -1,0 +1,26 @@
+.wrap.setting {
+    .field {
+        padding: .75rem 1.25rem;
+        &>label {
+            display: block;
+            margin-bottom: 1rem;
+        }
+        &>input {
+            width: 100%;
+            border: 1px solid #efefef;
+            background: #fff;
+            border-radius: 2px;
+            font-size: 14px;
+            padding: 8px 16px;
+            &:hover {
+                border-color: #e3e3e3;
+            }
+            &:invalid {
+                border-color: #e93f3c;
+            }
+        }
+        &:last-child {
+            text-align: right;
+        }
+    }
+}

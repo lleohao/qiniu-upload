@@ -136,3 +136,8 @@ a {
     vertical-align: baseline;
     background: transparent;
 }
+
+html,
+body {
+    height: 100%;
+}
