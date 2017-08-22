@@ -18,4 +18,8 @@ export class NavComponent {
             }
         });
     }
+
+    goBack() {
+        this.router.navigateByUrl('/upload');
+    }
 }
