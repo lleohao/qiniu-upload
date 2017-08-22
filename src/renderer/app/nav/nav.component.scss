@@ -1,0 +1,23 @@
+nav {
+    padding: 0 16px;
+    height: 48px;
+    line-height: 48px;
+    .wrap {
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-48px);
+        opacity: 0;
+        transition: all ease-in .3s;
+    }
+    &:hover .wrap {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .iconfont {
+        font-size: 18px;
+        cursor: pointer;
+        &.hidden {
+            visibility: hidden;
+        }
+    }
+}
