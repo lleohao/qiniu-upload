@@ -1,6 +1,6 @@
 <div class="wrap setting">
     <p class="info">下列配置信息可以七牛的个人中心找到</p>
-    <form class="form setting-form" (ngSubmit)="onSubmit()" #settingForm="ngForm">
+    <form class="form setting-form" (ngSubmit)="saveSetting()" #settingForm="ngForm">
         <div class="field">
             <label for="ak">accessKey</label><input type="text" required id="ak" name="ak" [(ngModel)]="model.ak" placeholder="请输入accessKey">
         </div>
@@ -17,7 +17,7 @@
         </div>
         <div class="field">
             <button type="submit" [disabled]="!settingForm.form.valid" class="btn">保存设置</button>
-            <button type="reset" class="btn">清空配置</button>
+            <button type="reset" (click)="clearSetting()" class="btn">清空配置</button>
         </div>
     </form>
 </div>

@@ -9,6 +9,8 @@ import { SettingComponent } from './setting/setting.component';
 import { UploadComponent } from './upload/upload.component';
 import { NavComponent } from './nav/nav.component';
 
+import { SettingService } from './service/setting.service';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -21,7 +23,7 @@ import { NavComponent } from './nav/nav.component';
         AppRoutingModule,
         FormsModule
     ],
-    providers: [],
+    providers: [SettingService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

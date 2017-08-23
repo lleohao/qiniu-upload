@@ -1,27 +1,30 @@
 import { app } from 'electron';
-import * as settings from 'electron-settings';
+import * as electronSetting from 'electron-settings';
 
 import api from './api';
 
-api.add('/setting/save', (e, args) => {
-    settings.set('certificate', args);
-    e.returnValue = {
-        code: 200,
-        message: 'success'
-    };
+export interface Settings {
+    ak: string;
+    sk: string;
+    scope: string;
+    domain: string;
+}
+
+api.add('/setting/save', (e, uid, settings) => {
+    electronSetting.set('certificate', settings);
+    e.sender.send(`/setting/save/${uid}`);
 });
 
-api.add('/setting/clear', (e) => {
-    settings.deleteAll();
-    e.returnValue = {
-        code: 200,
-        message: 'success'
-    };
+api.add('/setting/clear', (e, uid) => {
+    electronSetting.deleteAll();
+    e.sender.send(`/setting/clear/${uid}`);
 });
 
-api.add('/setting', (e) => {
-    if (settings.has('certificate')) {
-        const setting = settings.get('certificate');
-        e.sender.send('load-setting', setting);
+api.add('/setting', (e, uid) => {
+    if (electronSetting.has('certificate')) {
+        const setting: Settings = electronSetting.get('certificate');
+        e.sender.send(`/setting/${uid}`, setting);
+    } else {
+        e.sender.send(`/setting/${uid}`, { ak: '', sk: '', scope: '', domain: '' });
     }
 });
