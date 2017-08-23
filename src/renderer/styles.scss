@@ -33,3 +33,8 @@
     border-color: #0181f8;
     background: #0181f8;
 }
+
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: .65;
+}
