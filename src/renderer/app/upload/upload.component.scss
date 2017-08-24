@@ -1,0 +1,44 @@
+.upload-wrap {
+    padding: 0 48px 48px;
+    height: calc(100% - 48px);
+    .upload-border {
+        position: relative;
+        height: 100%;
+        border: 2px dashed #ccc;
+        border-radius: 2px;
+        transition: all .3s;
+        .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            text-align: center;
+            color: #999;
+            transition: all .3s .05s;
+            .icon-upload {
+                font-size: 8rem;
+            }
+            p {
+                line-height: 1.5;
+                &.big {
+                    font-size: 2rem;
+                    font-weight: 700;
+                }
+                &.small {
+                    color: #999999;
+                    font-size: .75rem;
+                    a {
+                        color: #b6d0e3;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+        &.drop-over {
+            border: 2px solid #0789cf;
+            .center {
+                color: #0789cf;
+            }
+        }
+    }
+}

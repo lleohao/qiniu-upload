@@ -13,7 +13,17 @@
 <body>
     <app-root></app-root>
     <script>
+        // fix electron 
         const electron = require('electron');
+
+        // fix drop
+        document.ondragover = document.ondrop = (ev) => {
+            ev.preventDefault()
+        }
+
+        document.body.ondrop = (ev) => {
+            ev.preventDefault()
+        }
 
     </script>
 </body>
