@@ -8,6 +8,7 @@
         border-radius: 2px;
         transition: all .3s;
         .center {
+            pointer-events: none;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -28,13 +29,15 @@
                     color: #999999;
                     font-size: .75rem;
                     a {
+                        position: relative;
                         color: #b6d0e3;
                         text-decoration: none;
+                        pointer-events: all;
                     }
                 }
             }
         }
-        &.drop-over {
+        &.drag-over {
             border: 2px solid #0789cf;
             .center {
                 color: #0789cf;
