@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
+import { FileService } from '../service/file.service';
+
 @Component({
     selector: 'app-upload',
     templateUrl: './upload.component.html',
@@ -7,6 +9,10 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 })
 export class UploadComponent implements OnInit {
     dragOver = false;
+
+    constructor(private fileService: FileService) {
+
+    }
 
     ngOnInit() {
     }
@@ -18,7 +24,8 @@ export class UploadComponent implements OnInit {
     }
 
     selectFile() {
-
+        this.fileService.selectFile().then((filePaths) => {
+            console.log(filePaths);
+        });
     }
-
 }

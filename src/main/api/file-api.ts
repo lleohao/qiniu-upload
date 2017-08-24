@@ -1,4 +1,5 @@
-import { app } from 'electron';
+import { parse } from 'path';
+import { app, dialog } from 'electron';
 import * as settings from 'electron-settings';
 
 import api from './api';
@@ -29,4 +30,22 @@ api.add('/file/upload', (e, filePath, filename) => {
             e.sender.send('upload-success', fileURl);
         });
     }
+});
+
+api.add('/file/select', (e, uid) => {
+    dialog.showOpenDialog({
+        title: 'Select file',
+        message: 'select file',
+        properties: ['multiSelections', 'openFile']
+    }, (filePaths: string[]) => {
+        const files = filePaths ? filePaths.map((filePath) => {
+            const parsed = parse(filePath);
+            return {
+                name: parsed.name,
+                ext: parsed.ext
+            };
+        }) : [];
+
+        e.sender.send(`/file/select/${uid}`, files);
+    });
 });

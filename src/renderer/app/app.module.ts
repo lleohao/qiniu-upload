@@ -9,6 +9,7 @@ import { SettingComponent } from './setting/setting.component';
 import { UploadComponent } from './upload/upload.component';
 import { NavComponent } from './nav/nav.component';
 
+import { FileService } from './service/file.service';
 import { SettingService } from './service/setting.service';
 
 @NgModule({
@@ -23,7 +24,7 @@ import { SettingService } from './service/setting.service';
         AppRoutingModule,
         FormsModule
     ],
-    providers: [SettingService],
+    providers: [FileService, SettingService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
