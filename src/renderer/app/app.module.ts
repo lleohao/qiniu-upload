@@ -11,6 +11,7 @@ import { NavComponent } from './nav/nav.component';
 
 import { FileService } from './service/file.service';
 import { SettingService } from './service/setting.service';
+import { ComponentsModule } from './components/components.module';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { SettingService } from './service/setting.service';
     imports: [
         BrowserModule,
         AppRoutingModule,
-        FormsModule
+        FormsModule,
+        ComponentsModule
     ],
     providers: [FileService, SettingService],
     bootstrap: [AppComponent]

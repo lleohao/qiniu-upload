@@ -12,7 +12,7 @@ let mainWin: Electron.BrowserWindow;
 function createWindow() {
     mainWin = new BrowserWindow({
         width: 800,
-        height: 640,
+        height: 800,
         title: '七牛上传工具'
     });
     const webContents = mainWin.webContents;
