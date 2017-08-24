@@ -140,4 +140,9 @@ a {
 html,
 body {
     height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: 'microsoft yahei ui', 'microsoft yahei', PingFangSC-Light, 'helvetica neue', 'hiragino sans gb', arial, simsun, sans-serif;
 }

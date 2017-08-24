@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
     styleUrls: ['./nav.component.scss']
 })
 export class NavComponent {
-    private hidden = true;
+    hidden = true;
 
     constructor(private router: Router) {
         this.router.events.subscribe((e) => {
