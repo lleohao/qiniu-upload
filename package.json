@@ -33,6 +33,7 @@
         "codelyzer": "~3.1.1",
         "electron": "1.7.5",
         "electron-builder": "^19.20.1",
+        "mockjs": "^1.0.1-beta3",
         "ts-node": "~3.2.0",
         "tslint": "~5.3.2",
         "typescript": "~2.3.3"
