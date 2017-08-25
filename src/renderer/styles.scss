@@ -26,15 +26,27 @@
     background: #0174df;
     font-size: 1rem;
     text-align: center;
+    pointer-events: all;
     cursor: pointer;
-}
-
-.btn:hover {
-    border-color: #0181f8;
-    background: #0181f8;
-}
-
-.btn:disabled {
-    cursor: not-allowed;
-    opacity: .65;
+    &.btn-grey {
+        border: 1px solid #ccc;
+        background-color: #fff;
+        color: #666666;
+        &:hover {
+            background: #fff;
+            border-color: #999;
+        }
+    }
+    &:hover {
+        border-color: #0181f8;
+        background: #0181f8;
+    }
+    &:disabled {
+        cursor: not-allowed;
+        opacity: .65;
+    }
+    &:active,
+    &:focus {
+        outline: none;
+    }
 }

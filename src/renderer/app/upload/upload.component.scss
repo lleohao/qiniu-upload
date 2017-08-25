@@ -16,6 +16,9 @@
             text-align: center;
             color: #999;
             transition: all .3s .05s;
+            .btn {
+                display: none;
+            }
             .icon-upload {
                 font-size: 8rem;
             }
@@ -41,6 +44,29 @@
             border: 2px solid #0789cf;
             .center {
                 color: #0789cf;
+            }
+        }
+    }
+    .upload-border.inline {
+        height: 56px;
+        .center {
+            text-align: left;
+            position: relative;
+            padding-left: 16px;
+            .icon-upload,
+            .small {
+                display: none;
+            }
+            .btn {
+                display: inline-block;
+            }
+            p {
+                display: inline;
+                font-size: 1rem;
+                text-transform: lowercase;
+            }
+            .btn+p:before {
+                content: " or ";
             }
         }
     }
