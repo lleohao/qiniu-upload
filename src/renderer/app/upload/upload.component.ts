@@ -9,6 +9,11 @@ import { FileService } from '../service/file.service';
 })
 export class UploadComponent implements OnInit {
     dragOver = false;
+    inline = true;
+    currentClass = {
+        'drag-over': this.dragOver,
+        'inline': this.inline
+    };
 
     constructor(private fileService: FileService) {
 

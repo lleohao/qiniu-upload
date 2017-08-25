@@ -1,11 +1,31 @@
 <div class="upload-wrap">
-    <div class="upload-border inline" [class.drag-over]="dragOver" (drop)="$event.preventDefault();this.drop($event)" (dragleave)="$event.preventDefault();this.dragOver=false;" (dragenter)="$event.preventDefault(); dragOver=true;">
+    <div class="progerss-area">
+        <ul>
+            <li>
+                <span><app-file-icon [ext]="'jpeg'"></app-file-icon>Template.jpeg</span>
+                <span>2MB</span>
+            </li>
+            <app-progress [progress]="20"></app-progress>
+            <li>
+                <span><app-file-icon [ext]="'jpeg'"></app-file-icon>Template.jpeg</span>
+                <span>2MB</span>
+            </li>
+            <app-progress [progress]="100"></app-progress>
+        </ul>
+    </div>
+    <div class="upload-area"
+         [ngClass]="this.currentClass"
+         (drop)="$event.preventDefault();this.drop($event)"
+         (dragleave)="$event.preventDefault();this.currentClass['drag-over']=false;"
+         (dragenter)="$event.preventDefault();this.currentClass['drag-over']=true;">
         <div class="center">
             <i class="iconfont icon-upload"></i>
-            <button class="btn btn-grey" (click)="this.selectFile()">Browse your files</button>
+            <button class="btn btn-grey"
+                    (click)="this.selectFile()">Browse your files</button>
             <p class="big">Drag & Drop</p>
             <p class="big">your files here</p>
-            <p class="small">or <a href="javascript: void(0)" (click)="this.selectFile()">browse.</a></p>
+            <p class="small">or <a href="javascript: void(0)"
+                   (click)="this.selectFile()">browse.</a></p>
         </div>
     </div>
 </div>

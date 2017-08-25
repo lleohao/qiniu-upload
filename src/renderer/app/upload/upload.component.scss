@@ -1,7 +1,7 @@
 .upload-wrap {
     padding: 0 48px 48px;
     height: calc(100% - 48px);
-    .upload-border {
+    .upload-area {
         position: relative;
         height: 100%;
         border: 2px dashed #ccc;
@@ -47,7 +47,7 @@
             }
         }
     }
-    .upload-border.inline {
+    .upload-area.inline {
         height: 56px;
         .center {
             text-align: left;
@@ -68,6 +68,55 @@
             .btn+p:before {
                 content: " or ";
             }
+        }
+    }
+    .progerss-area{
+        height: calc(100% - 56px);
+        margin-bottom: 16px;
+        padding-right: 8px;
+        overflow: auto;
+
+        ul {
+            overflow: hidden;
+            position: relative;
+        }
+
+        li{
+            height: 48px;
+            line-height: 48px;
+            padding: 0 8px;
+            vertical-align: middle;
+            overflow: hidden;
+
+            border-bottom: 1px solid #666;
+            &:first-child {
+                border-top: 1px solid #666666;
+            }
+            span {
+                color: #0789cf;
+            }
+            span + span {
+                float: right;
+            }
+        }
+
+        &::-webkit-scrollbar{
+            width: 10px;
+            height: 10px;
+        }
+        &::-webkit-scrollbar-corner{
+            background-color: #535353;
+        }
+        &::-webkit-scrollbar-thumb{
+            background-color: #ccc;
+            border-radius: 5px
+        } 
+        &::-webkit-scrollbar-track{
+            background: 0 0;
+        }
+
+        /deep/ .progress {
+            margin-top: -2px;
         }
     }
 }
