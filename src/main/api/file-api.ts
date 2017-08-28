@@ -33,17 +33,18 @@ const getClient = (function () {
 const resCb = ({ err, body, code }, id: string) => {
     if (err !== null) {
         dialog.showErrorBox('上传失败', err);
-        ipcMain.emit(`/file/upload/error`, id);
+        ipcMain.emit(`/file/upload/error`, { id, error: err });
         return;
     }
 
     if (code !== undefined) {
-        dialog.showErrorBox('上传失败', `http code: ${code}, ${body}`);
-        ipcMain.emit(`/file/upload/error`, id);
+        const errorMessage = `http code: ${code}, ${body}`;
+        dialog.showErrorBox('上传失败', errorMessage);
+        ipcMain.emit(`/file/upload/error`, { id, error: errorMessage });
         return;
     }
 
-    ipcMain.emit(`/file/upload/success`, id);
+    ipcMain.emit(`/file/upload/success`, { id });
 };
 
 /**

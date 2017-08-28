@@ -21,6 +21,17 @@ export class UploadComponent implements OnInit, DoCheck {
     progressList: ProgressItem[] = [];
 
     constructor(private fileService: FileService) {
+        electron.ipcRenderer.on('/file/upload/progress', (e, { id, progress }) => {
+            console.log(id, process);
+        });
+
+        electron.ipcRenderer.on('/file/upload/success', (e, { id }) => {
+            console.log('success', id);
+        });
+
+        electron.ipcRenderer.on('/file/upload/error', (e, { id, err }) => {
+            console.log('success', id, err);
+        });
     }
 
     ngOnInit() {
@@ -51,10 +62,10 @@ export class UploadComponent implements OnInit, DoCheck {
         this.fileService.selectFile().then((filePaths: SelectedFile[]) => {
             const temp = filePaths.map((file) => {
                 return {
-                    name: file.name,
+                    name: file.fileName,
                     ext: file.ext,
                     progress: 0,
-                    id: file.path
+                    id: file.localPath
                 };
             });
 

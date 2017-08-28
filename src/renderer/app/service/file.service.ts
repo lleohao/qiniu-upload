@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
 
 export interface SelectedFile {
+    localPath: string;
+    fileName: string;
+    size: number;
     ext: string;
-    name: string;
-    path: string;
 }
 
 @Injectable()
