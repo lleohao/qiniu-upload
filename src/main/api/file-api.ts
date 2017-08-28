@@ -42,7 +42,8 @@ api.add('/file/select', (e, uid) => {
             const parsed = parse(filePath);
             return {
                 name: parsed.name,
-                ext: parsed.ext
+                ext: parsed.ext.substr(1),
+                path: filePath
             };
         }) : [];
 

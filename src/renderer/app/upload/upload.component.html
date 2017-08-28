@@ -1,23 +1,24 @@
 <div class="upload-wrap">
-    <div class="progerss-area">
+    <div class="progerss-area"
+         *ngIf="this.inline">
         <ul>
-            <li>
-                <span><app-file-icon [ext]="'jpeg'"></app-file-icon>Template.jpeg</span>
-                <span>2MB</span>
-            </li>
-            <app-progress [progress]="20"></app-progress>
-            <li>
-                <span><app-file-icon [ext]="'jpeg'"></app-file-icon>Template.jpeg</span>
-                <span>2MB</span>
-            </li>
-            <app-progress [progress]="100"></app-progress>
+            <ng-template ngFor
+                         let-porgressItem
+                         [ngForOf]="progressList">
+                <li>
+                    <span><app-file-icon [ext]="porgressItem.ext"></app-file-icon>{{porgressItem.name + '.' + porgressItem.ext}}</span>
+                    <span>{{porgressItem.size}}MB</span>
+                </li>
+                <app-progress [progress]="porgressItem.progress"></app-progress>
+            </ng-template>
         </ul>
     </div>
     <div class="upload-area"
-         [ngClass]="this.currentClass"
+         [class.inline]="this.inline"
+         [class.drag-over]="this.dragOver"
          (drop)="$event.preventDefault();this.drop($event)"
-         (dragleave)="$event.preventDefault();this.currentClass['drag-over']=false;"
-         (dragenter)="$event.preventDefault();this.currentClass['drag-over']=true;">
+         (dragleave)="$event.preventDefault();this.dragOver=false;"
+         (dragenter)="$event.preventDefault();this.dragOver=true;">
         <div class="center">
             <i class="iconfont icon-upload"></i>
             <button class="btn btn-grey"

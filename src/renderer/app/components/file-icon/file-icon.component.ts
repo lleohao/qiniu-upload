@@ -11,6 +11,9 @@ export class FileIconComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
+        if (this.ext.startsWith('.')) {
+            this.ext = this.ext.substr(1);
+        }
     }
 
 }

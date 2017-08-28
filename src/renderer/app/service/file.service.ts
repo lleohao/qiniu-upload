@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 
 import { BaseService } from './base.service';
 
+export interface SelectedFile {
+    ext: string;
+    name: string;
+    path: string;
+}
+
 @Injectable()
 export class FileService extends BaseService {
     constructor() {
@@ -12,7 +18,7 @@ export class FileService extends BaseService {
         return new Promise((reslove, reject) => {
             const uid = this.uuid();
             this.ipcRender.send('/file/select', uid);
-            this.ipcRender.once(`/file/select/${uid}`, (e, filePath: string[]) => {
+            this.ipcRender.once(`/file/select/${uid}`, (e, filePath: SelectedFile[]) => {
                 reslove(filePath);
             });
         });
