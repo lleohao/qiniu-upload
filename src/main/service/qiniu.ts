@@ -1,5 +1,17 @@
 import * as qiniu from 'qiniu';
-import * as settings from 'electron-settings';
+import * as path from 'path';
+import * as fs from 'fs';
+
+const MAX_UPLOAD_COUNT = 5;
+const TOKEN_EXPIRES = 3600;
+
+export interface UploadFile {
+    localFile: string;
+    filename: string;
+    progressCb: (id, uploadSize) => void;
+    resCb: (err, ...args) => void;
+    id?: number | string;
+}
 
 export class Upload {
     private putPolicy;
@@ -7,8 +19,11 @@ export class Upload {
     private config;
     private token;
     private tokenValidPeriod;
-    private expires = 3600;
+    private expires = TOKEN_EXPIRES;
 
+    private MAX_UPLOAD_COUNT = 5;
+    private uploadQueue: UploadFile[] = [];
+    private inUpload = 0;
 
     constructor(ak: string, sk: string, scope: string) {
         this.mac = new qiniu.auth.digest.Mac(ak, sk);
@@ -32,21 +47,39 @@ export class Upload {
         return this.token;
     }
 
-    public uploadFile(path: string, filename: string, callback: (err, ...args) => void) {
-        const formUploader = new qiniu.form_up.FormUploader(this.config);
-        const putExtra = new qiniu.form_up.PutExtra();
+    public uploadFile({ localFile, filename, progressCb, resCb, id }: UploadFile) {
         const uploadToken = this.getUploadToken();
 
-        formUploader.putFile(uploadToken, filename, path, putExtra, function (respErr,
-            respBody, respInfo) {
-            if (respErr) {
-                callback(respErr);
-            }
-            if (respInfo.statusCode === 200) {
-                callback(null, respBody);
-            } else {
-                callback(null, respBody, respInfo.statusCode);
-            }
+        const resumeUploader = new qiniu.resume_up.ResumeUploader(this.config);
+        const putExtra = new qiniu.resume_up.PutExtra(null, {}, null, null, (uploadSize) => {
+            progressCb(id || localFile, uploadSize);
         });
+
+        if (this.inUpload <= this.MAX_UPLOAD_COUNT) {
+            this.inUpload++;
+
+            resumeUploader.putFile(uploadToken, filename, localFile, putExtra, (respErr, respBody, respInfo) => {
+                this.inUpload--;
+                if (this.uploadQueue.length !== 0) {
+                    this.uploadFile(this.uploadQueue.pop());
+                }
+
+                if (respErr) {
+                    resCb(respErr);
+                }
+                if (respInfo.statusCode === 200) {
+                    resCb(null, respBody);
+                } else {
+                    resCb(null, respBody, respInfo.statusCode);
+                }
+            });
+        } else {
+            this.uploadQueue.push({
+                localFile,
+                filename,
+                progressCb,
+                resCb
+            });
+        }
     }
 }
