@@ -1,49 +1,73 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { app, dialog } from 'electron';
+import { app, dialog, ipcMain } from 'electron';
 
 import api from './api';
 import configs from '../configs';
 import { Upload, UploadFile } from '../service/qiniu';
 
-let client = null;
 const { ak, sk, scope } = configs.setting;
 
-const getClient = () => {
-    if (client === null) {
-        client = new Upload(ak, sk, scope);
+/**
+ * 获取上传对象
+ */
+const getClient = (function () {
+    let client = null;
+
+    return () => {
+        if (client === null) {
+            client = new Upload(ak, sk, scope);
+        }
+        return client;
+    };
+})();
+
+/**
+ * 上传成功处理函数
+ * 
+ * @param err         七牛上传错误对象
+ * @param resBody     七牛上传响应体
+ * @param code        七牛上传 HTTP code
+ * @param id          文件唯一id
+ */
+const resCb = ({ err, body, code }, id: string) => {
+    if (err !== null) {
+        dialog.showErrorBox('上传失败', err);
+        ipcMain.emit(`/file/upload/error`, id);
+        return;
     }
 
-    return client;
+    if (code !== undefined) {
+        dialog.showErrorBox('上传失败', `http code: ${code}, ${body}`);
+        ipcMain.emit(`/file/upload/error`, id);
+        return;
+    }
+
+    ipcMain.emit(`/file/upload/success`, id);
+};
+
+/**
+ * 上传进度处理函数
+ * 
+ * @param id        文件唯一id
+ * @param progress  上传进度
+ */
+const progressCb = (id: string, progress: number) => {
+    ipcMain.emit('/file/upload/progress', { id, progress });
 };
 
 /**
  * 上传文件
  */
-api.add('/file/upload', (e, { localPath, fileName, size }) => {
+api.add('/file/upload', (e, { localPath, fileName, size, id }) => {
     const uploadClient = getClient();
 
     uploadClient.uploadFile({
         fileName,
         localPath,
         size,
-        progressCb: (id, progress) => {
-
-        },
-        resCb: (err, body, code) => {
-            if (err !== null) {
-                e.sender.send('error', err);
-                return;
-            }
-
-            if (code !== undefined) {
-                e.sender.send('error', `上传失败, http code: ${code}, ${body}`);
-                return;
-            }
-
-            const fileURl = domain + '/' + body.key;
-            e.sender.send('upload-success', fileURl);
-        }
+        progressCb: progressCb,
+        resCb: resCb
     });
 });
 
@@ -66,30 +90,15 @@ api.add('/file/select', (e, uid) => {
         }) : [];
 
         e.sender.send(`/file/select/${uid}`, files);
+
         files.forEach(({ fileName, localPath, size }) => {
-            const _ = {
+            uploadClient.uploadFile({
                 fileName,
                 localPath,
                 size,
-                progressCb: (id, progress) => {
-
-                },
-                resCb: (err, body, code) => {
-                    if (err !== null) {
-                        e.sender.send('error', err);
-                        return;
-                    }
-
-                    if (code !== undefined) {
-                        e.sender.send('error', `上传失败, http code: ${code}, ${body}`);
-                        return;
-                    }
-
-                    e.sender.send('upload-success', fileURl);
-                }
-            };
-
-            uploadClient.uploadFile(_);
+                progressCb: progressCb,
+                resCb: resCb
+            });
         });
     });
 });
