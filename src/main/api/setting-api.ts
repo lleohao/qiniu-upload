@@ -1,5 +1,6 @@
 import { app } from 'electron';
-import * as electronSetting from 'electron-settings';
+import configs from '../configs';
+
 
 import api from './api';
 
@@ -11,20 +12,15 @@ export interface Settings {
 }
 
 api.add('/setting/save', (e, uid, settings) => {
-    electronSetting.set('certificate', settings);
+    configs.save(settings);
     e.sender.send(`/setting/save/${uid}`);
 });
 
 api.add('/setting/clear', (e, uid) => {
-    electronSetting.deleteAll();
+    configs.clear();
     e.sender.send(`/setting/clear/${uid}`);
 });
 
 api.add('/setting', (e, uid) => {
-    if (electronSetting.has('certificate')) {
-        const setting: Settings = electronSetting.get('certificate');
-        e.sender.send(`/setting/${uid}`, setting);
-    } else {
-        e.sender.send(`/setting/${uid}`, { ak: '', sk: '', scope: '', domain: '' });
-    }
+    e.sender.send(`/setting/${uid}`, configs.setting);
 });

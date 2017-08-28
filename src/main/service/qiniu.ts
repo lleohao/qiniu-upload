@@ -1,16 +1,16 @@
 import * as qiniu from 'qiniu';
-import * as path from 'path';
 import * as fs from 'fs';
 
 const MAX_UPLOAD_COUNT = 5;
 const TOKEN_EXPIRES = 3600;
 
 export interface UploadFile {
-    localFile: string;
-    filename: string;
-    progressCb: (id, uploadSize) => void;
+    localPath: string;
+    fileName: string;
+    progressCb: (id, progress) => void;
     resCb: (err, ...args) => void;
     id?: number | string;
+    size?: number;
 }
 
 export class Upload {
@@ -47,18 +47,18 @@ export class Upload {
         return this.token;
     }
 
-    public uploadFile({ localFile, filename, progressCb, resCb, id }: UploadFile) {
+    public uploadFile({ localPath, fileName, progressCb, resCb, id, size }: UploadFile) {
         const uploadToken = this.getUploadToken();
 
         const resumeUploader = new qiniu.resume_up.ResumeUploader(this.config);
         const putExtra = new qiniu.resume_up.PutExtra(null, {}, null, null, (uploadSize) => {
-            progressCb(id || localFile, uploadSize);
+            progressCb(id || localPath, Math.floor(uploadSize / size));
         });
 
         if (this.inUpload <= this.MAX_UPLOAD_COUNT) {
             this.inUpload++;
 
-            resumeUploader.putFile(uploadToken, filename, localFile, putExtra, (respErr, respBody, respInfo) => {
+            resumeUploader.putFile(uploadToken, fileName, localPath, putExtra, (respErr, respBody, respInfo) => {
                 this.inUpload--;
                 if (this.uploadQueue.length !== 0) {
                     this.uploadFile(this.uploadQueue.pop());
@@ -75,8 +75,8 @@ export class Upload {
             });
         } else {
             this.uploadQueue.push({
-                localFile,
-                filename,
+                localPath,
+                fileName,
                 progressCb,
                 resCb
             });

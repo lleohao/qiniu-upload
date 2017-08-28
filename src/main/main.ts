@@ -1,11 +1,15 @@
-import * as settings from 'electron-settings';
-import * as path from 'path';
-import * as url from 'url';
 import { app, BrowserWindow, ipcMain, Menu } from 'electron';
+import * as path from 'path';
+import configs from './configs';
 
-import './api/'; // 导入api
 import { CopyService } from './service';
 import { isDev } from './utils';
+
+// Init project
+import './api/'; // 导入api
+configs.init();
+CopyService();
+
 
 let mainWin: Electron.BrowserWindow;
 
@@ -24,9 +28,6 @@ function createWindow() {
     } else {
         mainWin.loadURL(`file://${path.resolve(__dirname, 'dist/index.html')}`);
     }
-
-    // import service
-    CopyService();
 
     mainWin.on('closed', () => {
         mainWin = null;

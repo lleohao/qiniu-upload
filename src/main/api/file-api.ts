@@ -1,21 +1,36 @@
-import { parse } from 'path';
+import * as path from 'path';
+import * as fs from 'fs';
 import { app, dialog } from 'electron';
-import * as settings from 'electron-settings';
 
 import api from './api';
-import { Upload } from '../service/qiniu';
+import configs from '../configs';
+import { Upload, UploadFile } from '../service/qiniu';
 
-let uploadClient: Upload = null;
+let client = null;
+const { ak, sk, scope } = configs.setting;
+
+const getClient = () => {
+    if (client === null) {
+        client = new Upload(ak, sk, scope);
+    }
+
+    return client;
+};
 
 /**
  * 上传文件
  */
-api.add('/file/upload', (e, filePath, filename) => {
-    if (settings.has('certificate')) {
-        const { accessKey, secretKey, scope, domain } = settings.get('certificate');
-        uploadClient = uploadClient || new Upload(accessKey, secretKey, scope);
+api.add('/file/upload', (e, { localPath, fileName, size }) => {
+    const uploadClient = getClient();
 
-        uploadClient.uploadFile(filePath, filename, (err, body, code) => {
+    uploadClient.uploadFile({
+        fileName,
+        localPath,
+        size,
+        progressCb: (id, progress) => {
+
+        },
+        resCb: (err, body, code) => {
             if (err !== null) {
                 e.sender.send('error', err);
                 return;
@@ -28,8 +43,8 @@ api.add('/file/upload', (e, filePath, filename) => {
 
             const fileURl = domain + '/' + body.key;
             e.sender.send('upload-success', fileURl);
-        });
-    }
+        }
+    });
 });
 
 api.add('/file/select', (e, uid) => {
@@ -38,15 +53,43 @@ api.add('/file/select', (e, uid) => {
         message: 'select file',
         properties: ['multiSelections', 'openFile']
     }, (filePaths: string[]) => {
+        const uploadClient = getClient();
         const files = filePaths ? filePaths.map((filePath) => {
-            const parsed = parse(filePath);
+            const parsed = path.parse(filePath);
+            const size = fs.statSync(filePath).size;
             return {
-                name: parsed.name,
-                ext: parsed.ext.substr(1),
-                path: filePath
+                fileName: parsed.name,
+                localPath: filePath,
+                size: size,
+                ext: parsed.ext.substr(1)
             };
         }) : [];
 
         e.sender.send(`/file/select/${uid}`, files);
+        files.forEach(({ fileName, localPath, size }) => {
+            const _ = {
+                fileName,
+                localPath,
+                size,
+                progressCb: (id, progress) => {
+
+                },
+                resCb: (err, body, code) => {
+                    if (err !== null) {
+                        e.sender.send('error', err);
+                        return;
+                    }
+
+                    if (code !== undefined) {
+                        e.sender.send('error', `上传失败, http code: ${code}, ${body}`);
+                        return;
+                    }
+
+                    e.sender.send('upload-success', fileURl);
+                }
+            };
+
+            uploadClient.uploadFile(_);
+        });
     });
 });
