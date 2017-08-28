@@ -4166,9 +4166,9 @@ q@^1.1.2:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.0.tgz#dd01bac9d06d30e6f219aecb8253ee9ebdc308f1"
 
-qiniu@^7.0.6:
-  version "7.0.6"
-  resolved "https://registry.yarnpkg.com/qiniu/-/qiniu-7.0.6.tgz#4256f15b9ab7b8a8968c2d8ab20c3ddc1636e3c5"
+qiniu@^7.0.8:
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/qiniu/-/qiniu-7.0.8.tgz#4d216158b6a5ddf67f1972e293af8d30e6dd294b"
   dependencies:
     agentkeepalive "3.3.0"
     crc32 "0.2.2"
