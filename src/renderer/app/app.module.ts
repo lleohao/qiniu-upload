@@ -11,6 +11,7 @@ import { NavComponent } from './nav/nav.component';
 
 import { FileService } from './service/file.service';
 import { SettingService } from './service/setting.service';
+import { RouterService } from './service/router.service';
 import { ComponentsModule } from './components/components.module';
 
 @NgModule({
@@ -27,7 +28,7 @@ import { ComponentsModule } from './components/components.module';
         ComponentsModule,
         CommonModule
     ],
-    providers: [FileService, SettingService],
+    providers: [FileService, SettingService, RouterService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

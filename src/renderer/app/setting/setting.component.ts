@@ -16,10 +16,7 @@ export class SettingComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.settingSerivce.getSetting()
-            .then((setting: Settings) => {
-                this.model.update(setting);
-            });
+        this.model.update(this.settingSerivce.getSetting());
     }
 
     saveSetting() {

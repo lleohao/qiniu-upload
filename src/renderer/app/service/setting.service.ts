@@ -1,23 +1,49 @@
 import { Injectable } from '@angular/core';
 
+import { BaseService } from './base.service';
 import { Settings } from '../setting/setting.model';
 
 @Injectable()
-export class SettingService {
-    private ipcRender = electron.ipcRenderer;
+export class SettingService extends BaseService {
+    private settings: Settings;
+    constructor() {
+        super();
+        this.reset();
 
-    private uuid() {
-        return Math.random().toString(36).slice(2);
+        this.ipcRender.send('/setting/get');
+        this.ipcRender.once(`/setting/get`, (e, settings: Settings) => {
+            this.settings = settings;
+        });
+    }
+
+    private reset() {
+        this.settings = {
+            ak: '',
+            sk: '',
+            scope: '',
+            domain: ''
+        };
+    }
+
+    private checkSetting(): boolean {
+        const settings = this.settings;
+        const len = Object.keys(settings).reduce((prev, cur) => {
+            if (typeof prev === 'string') {
+                return settings[prev].length + settings[cur].length;
+            }
+
+            return prev + settings[cur].length;
+        });
+
+        return (parseInt(len, 10) >= 4);
+    }
+
+    get valiad() {
+        return this.checkSetting();
     }
 
     getSetting() {
-        const uid = this.uuid();
-        return new Promise((reslove, reject) => {
-            this.ipcRender.send('/setting', uid);
-            this.ipcRender.once(`/setting/${uid}`, (e, settings: Settings) => {
-                reslove(settings);
-            });
-        });
+        return this.settings;
     }
 
     saveSetting(settings: Settings) {
@@ -25,6 +51,7 @@ export class SettingService {
         return new Promise((reslove, reject) => {
             this.ipcRender.send('/setting/save', uid, settings);
             this.ipcRender.once(`/setting/save/${uid}`, (e, code) => {
+                this.settings = settings;
                 reslove();
             });
         });
@@ -35,6 +62,7 @@ export class SettingService {
         return new Promise((reslove, reject) => {
             this.ipcRender.send('/setting/clear', uid);
             this.ipcRender.once(`/setting/clear/${uid}`, (e, code) => {
+                this.reset();
                 reslove();
             });
         });

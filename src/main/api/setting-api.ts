@@ -21,6 +21,6 @@ api.add('/setting/clear', (e, uid) => {
     e.sender.send(`/setting/clear/${uid}`);
 });
 
-api.add('/setting', (e, uid) => {
-    e.sender.send(`/setting/${uid}`, configs.setting);
+api.add('/setting/get', (e) => {
+    e.sender.send(`/setting/get`, configs.setting);
 });
