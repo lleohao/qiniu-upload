@@ -12,4 +12,11 @@ li{
     span + span {
         float: right;
     }
+
+    .icon-close {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: rgb(208, 106, 99);
+        margin-left: 8px;
+    }
 }

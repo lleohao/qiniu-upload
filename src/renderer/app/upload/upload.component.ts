@@ -33,7 +33,6 @@ export class UploadComponent implements OnInit, DoCheck {
                 const updateItem = this.progressList[index];
                 updateItem.progress = progress;
 
-                console.log(id, progress);
                 this.progressList[index] = updateItem;
             });
         });

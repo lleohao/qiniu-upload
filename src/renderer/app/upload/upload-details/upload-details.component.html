@@ -1,5 +1,6 @@
 <li>
     <span><app-file-icon [ext]="progressItem.ext"></app-file-icon>{{progressItem.name + '.' + progressItem.ext}}</span>
-    <span *ngIf="progressItem.progress===100">{{progressItem.sizeTxt}}</span>
+    <span *ngIf="progressItem.progress < 100"><i class="iconfont icon-close"></i></span>
+    <span>{{progressItem.sizeTxt}}</span>
 </li>
 <app-progress [progress]="progressItem.progress"></app-progress>
