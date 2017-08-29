@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SettingComponent } from './setting/setting.component';
 import { UploadComponent } from './upload/upload.component';
+import { UploadDetailsComponent } from './upload/upload-details/upload-details.component';
 import { NavComponent } from './nav/nav.component';
 
 import { FileService } from './service/file.service';
@@ -19,7 +20,8 @@ import { ComponentsModule } from './components/components.module';
         AppComponent,
         SettingComponent,
         UploadComponent,
-        NavComponent
+        NavComponent,
+        UploadDetailsComponent
     ],
     imports: [
         BrowserModule,

@@ -79,25 +79,7 @@
         ul {
             overflow: hidden;
             position: relative;
-        }
-
-        li{
-            height: 48px;
-            line-height: 48px;
-            padding: 0 8px;
-            vertical-align: middle;
-            overflow: hidden;
-
-            border-bottom: 1px solid #666;
-            &:first-child {
-                border-top: 1px solid #666666;
-            }
-            span {
-                color: #0789cf;
-            }
-            span + span {
-                float: right;
-            }
+            border-top: 1px solid #666666;
         }
 
         &::-webkit-scrollbar{

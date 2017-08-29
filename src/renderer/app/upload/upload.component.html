@@ -2,15 +2,8 @@
     <div class="progerss-area"
          *ngIf="this.inline">
         <ul>
-            <ng-template ngFor
-                         let-porgressItem
-                         [ngForOf]="progressList">
-                <li>
-                    <span><app-file-icon [ext]="porgressItem.ext"></app-file-icon>{{porgressItem.name + '.' + porgressItem.ext}}</span>
-                    <span>{{porgressItem.size}}</span>
-                </li>
-                <app-progress [progress]="porgressItem.progress"></app-progress>
-            </ng-template>
+            <app-upload-details *ngFor="let progressItem of progressList"
+                                [progressItem]="progressItem"></app-upload-details>
         </ul>
     </div>
     <div class="upload-area"

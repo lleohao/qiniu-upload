@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, DoCheck, NgZone } from '@angular/core';
 
 import { FileService, SelectedFile } from '../service/file.service';
 
@@ -7,7 +7,7 @@ export interface ProgressItem {
     ext: string;
     progress: number;
     id: number | string;
-    size?: string;
+    size?: number;
 }
 
 @Component({
@@ -20,21 +20,23 @@ export class UploadComponent implements OnInit, DoCheck {
     inline = false;
     progressList: ProgressItem[] = [];
 
-    constructor(private fileService: FileService) {
-        electron.ipcRenderer.on('/file/upload/progress', (e, { id, progress }) => {
-            console.log('progress', id, progress);
-        });
-
-        electron.ipcRenderer.on('/file/upload/success', (e, { id }) => {
-            console.log('success', id);
-        });
-
+    constructor(private fileService: FileService, private zone: NgZone) {
         electron.ipcRenderer.on('/file/upload/error', (e, { id, err }) => {
             console.log('error', id, err);
         });
     }
 
     ngOnInit() {
+        this.fileService.uploadProgress().subscribe(({ id, progress }) => {
+            this.zone.run(() => {
+                const index = this.findIndexById(id);
+                const updateItem = this.progressList[index];
+                updateItem.progress = progress;
+
+                console.log(id, progress);
+                this.progressList[index] = updateItem;
+            });
+        });
     }
 
     ngDoCheck() {
@@ -51,12 +53,12 @@ export class UploadComponent implements OnInit, DoCheck {
                 ext: file.name.split('.')[1],
                 progress: 0,
                 id: file.path,
-                size: this.translateSize(file.size)
+                size: file.size
             });
         }
 
         this.dragOver = false;
-        this.progressList = this.progressList.concat(temp);
+        this.progressList.unshift(...temp);
     }
 
     selectFile() {
@@ -65,26 +67,25 @@ export class UploadComponent implements OnInit, DoCheck {
                 return {
                     name: file.fileName,
                     ext: file.ext,
-                    size: this.translateSize(file.size),
+                    size: file.size,
                     progress: 0,
                     id: file.localPath
                 };
             });
 
-            this.progressList = this.progressList.concat(temp);
+            this.progressList.unshift(...temp);
         });
     }
 
-    private translateSize(size: number) {
-        const unit = ['b', 'KB', 'MB', 'GB'];
+    private findIndexById(id) {
         let index = 0;
-
-        while (size >= 1024) {
-            size = size / 1024;
-            index++;
+        for (index = 0; index < this.progressList.length; index++) {
+            const element = this.progressList[index];
+            if (element.id === id) {
+                break;
+            }
         }
-        size = Math.ceil(size);
 
-        return `${size}${unit[index]}`;
+        return index;
     }
 }

@@ -43,8 +43,6 @@ const resCb = (e: Electron.Event) => {
             e.sender.send('/file/upload/error', { id, error: errorMessage });
             return;
         }
-
-        e.sender.send('/file/upload/success', { id });
     };
 };
 
