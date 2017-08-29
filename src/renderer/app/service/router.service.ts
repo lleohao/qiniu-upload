@@ -10,15 +10,11 @@ export class RouterService implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot) {
-        return new Promise<boolean>((reslove) => {
-            setTimeout(() => {
-                if (this.settingService.valiad) {
-                    reslove(true);
-                }
+        if (this.settingService.valiad) {
+            return true;
+        }
 
-                this.router.navigateByUrl('/setting');
-                reslove(false);
-            }, 0);
-        });
+        this.router.navigateByUrl('/setting');
+        return false;
     }
 }

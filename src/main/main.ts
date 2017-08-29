@@ -7,7 +7,6 @@ import { isDev } from './utils';
 
 // Init project
 import './api/'; // 导入api
-configs.init();
 CopyService();
 
 

@@ -10,10 +10,7 @@ export class SettingService extends BaseService {
         super();
         this.reset();
 
-        this.ipcRender.send('/setting/get');
-        this.ipcRender.once(`/setting/get`, (e, settings: Settings) => {
-            this.settings = settings;
-        });
+        this.settings = this.ipcRender.sendSync('/setting/get');
     }
 
     private reset() {

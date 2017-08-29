@@ -1,7 +1,6 @@
 import { app } from 'electron';
 import configs from '../configs';
 
-
 import api from './api';
 
 export interface Settings {
@@ -22,5 +21,6 @@ api.add('/setting/clear', (e, uid) => {
 });
 
 api.add('/setting/get', (e) => {
-    e.sender.send(`/setting/get`, configs.setting);
+    console.log(configs.setting);
+    e.returnValue = configs.setting;
 });

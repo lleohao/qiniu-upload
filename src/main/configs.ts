@@ -7,31 +7,34 @@ export interface QiNiuSetting {
     domain: string;
 }
 
-export let setting: QiNiuSetting = {
-    ak: '',
-    sk: '',
-    scope: '',
-    domain: ''
-};
+class Config {
+    setting: QiNiuSetting = {
+        ak: '',
+        sk: '',
+        scope: '',
+        domain: ''
+    };
 
-export default {
-    setting,
-    save: (settings) => {
-        setting = settings;
+    constructor() {
+        if (electronSetting.has('certificate')) {
+            this.setting = electronSetting.get('certificate');
+        }
+    }
+
+    save(settings) {
+        this.setting = settings;
         electronSetting.set('certificate', settings);
-    },
-    clear: () => {
-        setting = {
+    }
+
+    clear() {
+        this.setting = {
             ak: '',
             sk: '',
             scope: '',
             domain: ''
         };
         electronSetting.deleteAll();
-    },
-    init: () => {
-        if (electronSetting.has('certificate')) {
-            setting = electronSetting.get('certificate');
-        }
     }
-};
+}
+
+export default new Config();
