@@ -6,17 +6,16 @@ import api from './api';
 import configs from '../configs';
 import { Upload, UploadFile } from '../service/qiniu';
 
-const { ak, sk, scope } = configs.setting;
-
 /**
  * 获取上传对象
  */
 const getClient = (function () {
     let client = null;
 
-    return () => {
-        if (client === null) {
-            client = new Upload(ak, sk, scope);
+    return (): Upload => {
+        if (client === null || configs.reflush) {
+            client = new Upload(configs.setting);
+            configs.reflush = false;
         }
         return client;
     };
@@ -30,21 +29,23 @@ const getClient = (function () {
  * @param code        七牛上传 HTTP code
  * @param id          文件唯一id
  */
-const resCb = ({ err, body, code }, id: string) => {
-    if (err !== null) {
-        dialog.showErrorBox('上传失败', err);
-        ipcMain.emit(`/file/upload/error`, { id, error: err });
-        return;
-    }
+const resCb = (e: Electron.Event) => {
+    return (id: string, err, body, code) => {
+        if (err !== null) {
+            dialog.showErrorBox('上传失败', err);
+            e.sender.send('/file/upload/error', { id, error: err });
+            return;
+        }
 
-    if (code !== undefined) {
-        const errorMessage = `http code: ${code}, ${body}`;
-        dialog.showErrorBox('上传失败', errorMessage);
-        ipcMain.emit(`/file/upload/error`, { id, error: errorMessage });
-        return;
-    }
+        if (code !== undefined) {
+            const errorMessage = `http code: ${code}, ${body}`;
+            dialog.showErrorBox('上传失败', errorMessage);
+            e.sender.send('/file/upload/error', { id, error: errorMessage });
+            return;
+        }
 
-    ipcMain.emit(`/file/upload/success`, { id });
+        e.sender.send('/file/upload/success', { id });
+    };
 };
 
 /**
@@ -53,8 +54,13 @@ const resCb = ({ err, body, code }, id: string) => {
  * @param id        文件唯一id
  * @param progress  上传进度
  */
-const progressCb = (id: string, progress: number) => {
-    ipcMain.emit('/file/upload/progress', { id, progress });
+const progressCb = (e: Electron.Event) => {
+    return (id: string, progress: number) => {
+        e.sender.send('/file/upload/progress', {
+            id,
+            progress
+        });
+    };
 };
 
 /**
@@ -67,8 +73,8 @@ api.add('/file/upload', (e, { localPath, fileName, size, id }) => {
         fileName,
         localPath,
         size,
-        progressCb: progressCb,
-        resCb: resCb
+        progressCb: progressCb(e),
+        resCb: resCb(e)
     });
 });
 
@@ -83,6 +89,7 @@ api.add('/file/select', (e, uid) => {
             const parsed = path.parse(filePath);
             const size = fs.statSync(filePath).size;
             return {
+                baseName: parsed.base,
                 fileName: parsed.name,
                 localPath: filePath,
                 size: size,
@@ -92,13 +99,13 @@ api.add('/file/select', (e, uid) => {
 
         e.sender.send(`/file/select/${uid}`, files);
 
-        files.forEach(({ fileName, localPath, size }) => {
+        files.forEach(({ baseName, localPath, size }) => {
             uploadClient.uploadFile({
-                fileName,
+                fileName: baseName,
                 localPath,
                 size,
-                progressCb: progressCb,
-                resCb: resCb
+                progressCb: progressCb(e),
+                resCb: resCb(e)
             });
         });
     });

@@ -8,7 +8,7 @@ export interface UploadFile {
     localPath: string;
     fileName: string;
     progressCb: (id, progress) => void;
-    resCb: ({ }, id) => void;
+    resCb: (id, err, body?, code?) => void;
     id?: number | string;
     size?: number;
 }
@@ -25,7 +25,7 @@ export class Upload {
     private uploadQueue: UploadFile[] = [];
     private inUpload = 0;
 
-    constructor(ak: string, sk: string, scope: string) {
+    constructor({ ak, sk, scope }) {
         this.mac = new qiniu.auth.digest.Mac(ak, sk);
 
         this.putPolicy = new qiniu.rs.PutPolicy({
@@ -53,7 +53,7 @@ export class Upload {
 
         const resumeUploader = new qiniu.resume_up.ResumeUploader(this.config);
         const putExtra = new qiniu.resume_up.PutExtra(null, {}, null, null, (uploadSize) => {
-            progressCb(id, Math.floor(uploadSize / size));
+            progressCb(id, Math.floor(uploadSize / size * 100));
         });
 
         if (this.inUpload <= this.MAX_UPLOAD_COUNT) {
@@ -66,12 +66,12 @@ export class Upload {
                 }
 
                 if (err) {
-                    resCb({ err }, id);
+                    resCb(id, err);
                 }
                 if (respInfo.statusCode === 200) {
-                    resCb({ err: null, body }, id);
+                    resCb(id, null, body);
                 } else {
-                    resCb({ err: null, body, code: respInfo.statusCode }, id);
+                    resCb(id, null, body, respInfo.code);
                 }
             });
         } else {

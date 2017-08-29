@@ -21,6 +21,5 @@ api.add('/setting/clear', (e, uid) => {
 });
 
 api.add('/setting/get', (e) => {
-    console.log(configs.setting);
     e.returnValue = configs.setting;
 });

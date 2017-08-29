@@ -14,6 +14,7 @@ class Config {
         scope: '',
         domain: ''
     };
+    reflush = false;
 
     constructor() {
         if (electronSetting.has('certificate')) {
@@ -22,6 +23,7 @@ class Config {
     }
 
     save(settings) {
+        this.reflush = true;
         this.setting = settings;
         electronSetting.set('certificate', settings);
     }

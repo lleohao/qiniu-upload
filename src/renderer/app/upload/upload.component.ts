@@ -7,7 +7,7 @@ export interface ProgressItem {
     ext: string;
     progress: number;
     id: number | string;
-    size?: number;
+    size?: string;
 }
 
 @Component({
@@ -22,7 +22,7 @@ export class UploadComponent implements OnInit, DoCheck {
 
     constructor(private fileService: FileService) {
         electron.ipcRenderer.on('/file/upload/progress', (e, { id, progress }) => {
-            console.log(id, process);
+            console.log('progress', id, progress);
         });
 
         electron.ipcRenderer.on('/file/upload/success', (e, { id }) => {
@@ -30,7 +30,7 @@ export class UploadComponent implements OnInit, DoCheck {
         });
 
         electron.ipcRenderer.on('/file/upload/error', (e, { id, err }) => {
-            console.log('success', id, err);
+            console.log('error', id, err);
         });
     }
 
@@ -50,7 +50,8 @@ export class UploadComponent implements OnInit, DoCheck {
                 name: file.name.split('.')[0],
                 ext: file.name.split('.')[1],
                 progress: 0,
-                id: file.path
+                id: file.path,
+                size: this.translateSize(file.size)
             });
         }
 
@@ -64,6 +65,7 @@ export class UploadComponent implements OnInit, DoCheck {
                 return {
                     name: file.fileName,
                     ext: file.ext,
+                    size: this.translateSize(file.size),
                     progress: 0,
                     id: file.localPath
                 };
@@ -71,5 +73,18 @@ export class UploadComponent implements OnInit, DoCheck {
 
             this.progressList = this.progressList.concat(temp);
         });
+    }
+
+    private translateSize(size: number) {
+        const unit = ['b', 'KB', 'MB', 'GB'];
+        let index = 0;
+
+        while (size >= 1024) {
+            size = size / 1024;
+            index++;
+        }
+        size = Math.ceil(size);
+
+        return `${size}${unit[index]}`;
     }
 }

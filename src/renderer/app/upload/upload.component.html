@@ -7,7 +7,7 @@
                          [ngForOf]="progressList">
                 <li>
                     <span><app-file-icon [ext]="porgressItem.ext"></app-file-icon>{{porgressItem.name + '.' + porgressItem.ext}}</span>
-                    <span>{{porgressItem.size}}MB</span>
+                    <span>{{porgressItem.size}}</span>
                 </li>
                 <app-progress [progress]="porgressItem.progress"></app-progress>
             </ng-template>
