@@ -1,6 +1,7 @@
 import { Component, OnInit, DoCheck, NgZone } from '@angular/core';
 
 import { FileService, SelectedFile } from '../service/file.service';
+import 'rxjs/add/operator/debounceTime';
 
 export interface ProgressItem {
     name: string;
@@ -27,15 +28,17 @@ export class UploadComponent implements OnInit, DoCheck {
     }
 
     ngOnInit() {
-        this.fileService.uploadProgress().subscribe(({ id, progress }) => {
-            this.zone.run(() => {
-                const index = this.findIndexById(id);
-                const updateItem = this.progressList[index];
-                updateItem.progress = progress;
+        this.fileService.uploadProgress()
+            .debounceTime(500)
+            .subscribe(({ id, progress }) => {
+                this.zone.run(() => {
+                    const index = this.findIndexById(id);
+                    const updateItem = this.progressList[index];
+                    updateItem.progress = progress;
 
-                this.progressList[index] = updateItem;
+                    this.progressList[index] = updateItem;
+                });
             });
-        });
     }
 
     ngDoCheck() {
