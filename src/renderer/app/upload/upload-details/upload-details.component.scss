@@ -12,7 +12,9 @@ li{
     div:first-child {
         flex-grow: 1;
         color: #0789cf;
+        cursor: pointer;
 
+        user-select: none;
         @include ellipsis;
     }
 

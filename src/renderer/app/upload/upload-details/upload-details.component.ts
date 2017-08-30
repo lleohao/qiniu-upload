@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { ProgressItem } from '../upload.component';
+import { SettingService } from '../../service/setting.service';
 
 @Component({
     selector: 'app-upload-details',
@@ -9,13 +10,21 @@ import { ProgressItem } from '../upload.component';
 })
 export class UploadDetailsComponent implements OnInit {
     @Input() progressItem: ProgressItem;
-    completed = false;
+    domian = '';
     sizeTxt = '';
+    fileName = '';
 
-    constructor() { }
+    constructor(private setting: SettingService) { }
 
     ngOnInit() {
-        this.sizeTxt = this.translateSize(this.progressItem.size);
+        const progressItem = this.progressItem;
+        this.fileName = progressItem.name + '.' + progressItem.ext;
+        this.sizeTxt = this.translateSize(progressItem.size);
+        this.domian = this.setting.getSetting().domain;
+    }
+
+    getOuterLink() {
+        electron.clipboard.writeText(`${this.domian}/${this.fileName}`);
     }
 
     private translateSize(size: number) {
