@@ -22,26 +22,45 @@ export class FileService extends BaseService {
         super();
     }
 
-    dropFile(filePaths) {
-        return new Promise((reslove, reject) => {
-            const uid = this.uuid();
-            this.ipcRender.send('/file/drop', uid, filePaths);
-            this.ipcRender.once(`/file/drop/${uid}`, (e, filePath: SelectedFile[]) => {
-                reslove(filePath);
+    /**
+     * 发送通过拖拽选择的文件
+     * 
+     * @param {string[]} filePaths 
+     * @memberof FileService
+     */
+    sendDropFiles(filePaths: string[]) {
+        this.ipcRender.send('/file/drop', filePaths);
+    }
+
+    /**
+     * 发送请求打开文件选择框
+     * 
+     * @memberof FileService
+     */
+    selectLoaclFiles() {
+        this.ipcRender.send('/file/select');
+    }
+
+    /**
+     * 获取上传中的文件列表
+     * 
+     * @returns {Observable<SelectedFile[]>} 
+     * @memberof FileService
+     */
+    uploadFileList(): Observable<SelectedFile[]> {
+        return Observable.create((observer: Subscriber<SelectedFile[]>) => {
+            this.ipcRender.on('/file/uploadlist', (e, files: SelectedFile[]) => {
+                observer.next(files);
             });
         });
     }
 
-    selectFile(filePaths?: string[]) {
-        return new Promise((reslove, reject) => {
-            const uid = this.uuid();
-            this.ipcRender.send('/file/select', uid);
-            this.ipcRender.once(`/file/select/${uid}`, (e, filePath: SelectedFile[]) => {
-                reslove(filePath);
-            });
-        });
-    }
-
+    /**
+     * 获取文件上传的进度
+     * 
+     * @returns {Observable<ProgressInterface>} 
+     * @memberof FileService
+     */
     uploadProgress(): Observable<ProgressInterface> {
         return Observable.create((observer: Subscriber<ProgressInterface>) => {
             electron.ipcRenderer.on('/file/upload/progress', (e, { id, progress }) => {

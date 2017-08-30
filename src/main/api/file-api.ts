@@ -62,45 +62,12 @@ const progressCb = (e: Electron.Event) => {
 };
 
 /**
- * 打开文件选择框
+ * 上传文件函数
+ * 
+ * @param e             Electron event
+ * @param filePaths     上传文件的路径
  */
-api.add('/file/select', (e, uid) => {
-    dialog.showOpenDialog({
-        title: 'Select file',
-        message: 'select file',
-        properties: ['multiSelections', 'openFile']
-    }, (filePaths: string[]) => {
-        const uploadClient = getClient();
-        const files = filePaths ? filePaths.map((filePath) => {
-            const parsed = path.parse(filePath);
-            const size = fs.statSync(filePath).size;
-            return {
-                baseName: parsed.base,
-                fileName: parsed.name,
-                localPath: filePath,
-                size: size,
-                ext: parsed.ext.substr(1)
-            };
-        }) : [];
-
-        e.sender.send(`/file/select/${uid}`, files);
-
-        files.forEach(({ baseName, localPath, size }) => {
-            uploadClient.uploadFile({
-                fileName: baseName,
-                localPath,
-                size,
-                progressCb: progressCb(e),
-                resCb: resCb(e)
-            });
-        });
-    });
-});
-
-/**
- * 上传文件
- */
-api.add('/file/drop', (e, uid, filePaths: string[]) => {
+const uploadFile = (e: Electron.Event, filePaths: string[]) => {
     const uploadClient = getClient();
     const files = filePaths.map((filePath) => {
         const parsed = path.parse(filePath);
@@ -114,15 +81,37 @@ api.add('/file/drop', (e, uid, filePaths: string[]) => {
         };
     });
 
-    e.sender.send(`/file/drop/${uid}`, files);
+    e.sender.send('/file/uploadlist', files);
 
-    files.forEach(({ baseName, localPath, size }) => {
-        uploadClient.uploadFile({
-            fileName: baseName,
-            localPath,
-            size,
-            progressCb: progressCb(e),
-            resCb: resCb(e)
+    process.nextTick(() => {
+        files.forEach(({ baseName, localPath, size }) => {
+            uploadClient.uploadFile({
+                fileName: baseName,
+                localPath,
+                size,
+                progressCb: progressCb(e),
+                resCb: resCb(e)
+            });
         });
     });
+};
+
+/**
+ * 打开文件选择框
+ */
+api.add('/file/select', (e) => {
+    dialog.showOpenDialog({
+        title: 'Select file',
+        message: 'select file',
+        properties: ['multiSelections', 'openFile']
+    }, (filePaths: string[]) => {
+        uploadFile(e, filePaths);
+    });
+});
+
+/**
+ * 上传文件
+ */
+api.add('/file/drop', (e, filePaths: string[]) => {
+    uploadFile(e, filePaths);
 });

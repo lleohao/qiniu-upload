@@ -27,6 +27,21 @@ export class UploadComponent implements OnInit, DoCheck {
     }
 
     ngOnInit() {
+        this.fileService.uploadFileList()
+            .subscribe(files => {
+                const temp = files.map((file) => {
+                    return {
+                        name: file.fileName,
+                        ext: file.ext,
+                        size: file.size,
+                        progress: 0,
+                        id: file.localPath
+                    };
+                });
+
+                this.progressList.unshift(...temp);
+            });
+
         this.fileService.uploadProgress()
             .subscribe(({ id, progress }) => {
                 this.zone.run(() => {
@@ -51,35 +66,11 @@ export class UploadComponent implements OnInit, DoCheck {
         }
 
         this.dragOver = false;
-        this.fileService.dropFile(filePaths).then((files: SelectedFile[]) => {
-            const temp = files.map((file) => {
-                return {
-                    name: file.fileName,
-                    ext: file.ext,
-                    size: file.size,
-                    progress: 0,
-                    id: file.localPath
-                };
-            });
-
-            this.progressList.unshift(...temp);
-        });
+        this.fileService.sendDropFiles(filePaths);
     }
 
     selectFile() {
-        this.fileService.selectFile().then((files: SelectedFile[]) => {
-            const temp = files.map((file) => {
-                return {
-                    name: file.fileName,
-                    ext: file.ext,
-                    size: file.size,
-                    progress: 0,
-                    id: file.localPath
-                };
-            });
-
-            this.progressList.unshift(...temp);
-        });
+        this.fileService.selectLoaclFiles();
     }
 
     private findIndexById(id) {
