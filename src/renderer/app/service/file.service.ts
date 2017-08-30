@@ -22,7 +22,17 @@ export class FileService extends BaseService {
         super();
     }
 
-    selectFile() {
+    dropFile(filePaths) {
+        return new Promise((reslove, reject) => {
+            const uid = this.uuid();
+            this.ipcRender.send('/file/drop', uid, filePaths);
+            this.ipcRender.once(`/file/drop/${uid}`, (e, filePath: SelectedFile[]) => {
+                reslove(filePath);
+            });
+        });
+    }
+
+    selectFile(filePaths?: string[]) {
         return new Promise((reslove, reject) => {
             const uid = this.uuid();
             this.ipcRender.send('/file/select', uid);

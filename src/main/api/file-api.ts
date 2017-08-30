@@ -62,20 +62,8 @@ const progressCb = (e: Electron.Event) => {
 };
 
 /**
- * 上传文件
+ * 打开文件选择框
  */
-api.add('/file/upload', (e, { localPath, fileName, size, id }) => {
-    const uploadClient = getClient();
-
-    uploadClient.uploadFile({
-        fileName,
-        localPath,
-        size,
-        progressCb: progressCb(e),
-        resCb: resCb(e)
-    });
-});
-
 api.add('/file/select', (e, uid) => {
     dialog.showOpenDialog({
         title: 'Select file',
@@ -105,6 +93,36 @@ api.add('/file/select', (e, uid) => {
                 progressCb: progressCb(e),
                 resCb: resCb(e)
             });
+        });
+    });
+});
+
+/**
+ * 上传文件
+ */
+api.add('/file/drop', (e, uid, filePaths: string[]) => {
+    const uploadClient = getClient();
+    const files = filePaths.map((filePath) => {
+        const parsed = path.parse(filePath);
+        const size = fs.statSync(filePath).size;
+        return {
+            baseName: parsed.base,
+            fileName: parsed.name,
+            localPath: filePath,
+            size: size,
+            ext: parsed.ext.substr(1)
+        };
+    });
+
+    e.sender.send(`/file/drop/${uid}`, files);
+
+    files.forEach(({ baseName, localPath, size }) => {
+        uploadClient.uploadFile({
+            fileName: baseName,
+            localPath,
+            size,
+            progressCb: progressCb(e),
+            resCb: resCb(e)
         });
     });
 });

@@ -1,7 +1,6 @@
 import { Component, OnInit, DoCheck, NgZone } from '@angular/core';
 
 import { FileService, SelectedFile } from '../service/file.service';
-import 'rxjs/add/operator/debounceTime';
 
 export interface ProgressItem {
     name: string;
@@ -29,7 +28,6 @@ export class UploadComponent implements OnInit, DoCheck {
 
     ngOnInit() {
         this.fileService.uploadProgress()
-            .debounceTime(500)
             .subscribe(({ id, progress }) => {
                 this.zone.run(() => {
                     const index = this.findIndexById(id);
@@ -46,26 +44,31 @@ export class UploadComponent implements OnInit, DoCheck {
     }
 
     drop(e: DragEvent) {
-        const files = e.dataTransfer.files;
-        const temp = [];
-        for (let i = 0, len = files.length; i < len; i++) {
-            const file = files[i];
-            temp.push({
-                name: file.name.split('.')[0],
-                ext: file.name.split('.')[1],
-                progress: 0,
-                id: file.path,
-                size: file.size
-            });
+        const _files = e.dataTransfer.files;
+        const filePaths = [];
+        for (let i = 0, len = _files.length; i < len; i++) {
+            filePaths.push(_files[i].path);
         }
 
         this.dragOver = false;
-        this.progressList.unshift(...temp);
+        this.fileService.dropFile(filePaths).then((files: SelectedFile[]) => {
+            const temp = files.map((file) => {
+                return {
+                    name: file.fileName,
+                    ext: file.ext,
+                    size: file.size,
+                    progress: 0,
+                    id: file.localPath
+                };
+            });
+
+            this.progressList.unshift(...temp);
+        });
     }
 
     selectFile() {
-        this.fileService.selectFile().then((filePaths: SelectedFile[]) => {
-            const temp = filePaths.map((file) => {
+        this.fileService.selectFile().then((files: SelectedFile[]) => {
+            const temp = files.map((file) => {
                 return {
                     name: file.fileName,
                     ext: file.ext,
