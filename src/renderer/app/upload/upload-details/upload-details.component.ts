@@ -2,24 +2,20 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { ProgressItem } from '../upload.component';
 
-interface InProgressItem extends ProgressItem {
-    sizeTxt: string;
-}
-
 @Component({
     selector: 'app-upload-details',
     templateUrl: './upload-details.component.html',
     styleUrls: ['./upload-details.component.scss']
 })
 export class UploadDetailsComponent implements OnInit {
-    @Input() progressItem: InProgressItem;
+    @Input() progressItem: ProgressItem;
+    completed = false;
+    sizeTxt = '';
 
-    constructor() {
-
-    }
+    constructor() { }
 
     ngOnInit() {
-        this.progressItem.sizeTxt = this.translateSize(this.progressItem.size);
+        this.sizeTxt = this.translateSize(this.progressItem.size);
     }
 
     private translateSize(size: number) {

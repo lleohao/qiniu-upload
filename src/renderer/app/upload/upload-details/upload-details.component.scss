@@ -1,22 +1,43 @@
+@import "../../../assets/mixin.scss";
+
 li{
-    height: 48px;
-    line-height: 48px;
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
     padding: 0 8px;
-    vertical-align: middle;
-    overflow: hidden;
-
+    height: 48px;
     border-bottom: 1px solid #666;
-    span {
+    line-height: 48px;
+
+    div:first-child {
+        flex-grow: 1;
         color: #0789cf;
-    }
-    span + span {
-        float: right;
+
+        @include ellipsis;
     }
 
-    .icon-close {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: rgb(208, 106, 99);
-        margin-left: 8px;
+    div:last-child {
+        min-width: 94px;
+        text-align: right;
+
+        &.completed {
+            animation:completed .6s ease-in-out .3s forwards;
+        }
+    }
+    
+    app-progress {
+        margin-left: 4px;
+    }
+}
+
+@keyframes completed {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(40px);
+    }
+    100% {
+        transform: translateX(34px);
     }
 }
