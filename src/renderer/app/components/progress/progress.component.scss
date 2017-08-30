@@ -1,11 +1,7 @@
 .progress {
-    left: -100%;
-    position: absolute;
-
-    height: 2px;
-    width: 100%;
-    background-image: linear-gradient(to right, rgb(105, 215, 225), rgb(90, 181, 228));
-
-    border-radius: 4px;
-    transition: left 0.3s linear;
+    .progress-circle {
+        stroke-dasharray: 0 73px;
+        transform: matrix(0,-1,1,0,0,24);
+        transition: .2s ease-in-out stroke-dasharray;
+    }
 }

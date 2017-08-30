@@ -1,2 +1,20 @@
-<div class="progress"
-     [style.left]="(progress - 100) + '%'"></div>
+<div class="progress">
+    <svg width="24"
+         height="24"
+         xmlns="http://www.w3.org/2000/svg">
+        <circle r="10"
+                cy="12"
+                cx="12"
+                stroke-width="4"
+                stroke="#ccc"
+                fill="none" />
+        <circle class="progress-circle"
+                r="10"
+                cy="12"
+                cx="12"
+                stroke-width="4"
+                stroke="#53b5ff"
+                fill="none"
+                [style.strokeDasharray]="dasharray" />
+    </svg>
+</div>
