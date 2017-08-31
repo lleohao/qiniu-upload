@@ -4,12 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
-import { ComponentsModule } from './components/components.module';
+import { UploadModule } from './upload/upload.module';
 
 import { AppComponent } from './app.component';
 import { SettingComponent } from './setting/setting.component';
-import { UploadComponent } from './upload/upload.component';
-import { UploadDetailsComponent } from './upload/upload-details/upload-details.component';
 import { NavComponent } from './nav/nav.component';
 
 import { FileService } from './service/file.service';
@@ -17,19 +15,18 @@ import { SettingService } from './service/setting.service';
 import { RouterService } from './service/router.service';
 
 @NgModule({
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        FormsModule,
+
+        AppRoutingModule,
+        UploadModule
+    ],
     declarations: [
         AppComponent,
         SettingComponent,
-        UploadComponent,
-        NavComponent,
-        UploadDetailsComponent
-    ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        ComponentsModule,
-        BrowserAnimationsModule
+        NavComponent
     ],
     providers: [FileService, SettingService, RouterService],
     bootstrap: [AppComponent]
