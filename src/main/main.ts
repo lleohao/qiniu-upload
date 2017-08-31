@@ -15,6 +15,8 @@ function createWindow() {
     mainWin = new BrowserWindow({
         width: 680,
         height: 500,
+        minHeight: 500,
+        minWidth: 680,
         title: '七牛上传工具'
     });
     const webContents = mainWin.webContents;

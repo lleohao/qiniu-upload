@@ -45,9 +45,11 @@ export class SettingService extends BaseService {
 
     saveSetting(settings: Settings) {
         this.ipcRender.send('/setting/save', settings);
+        this.settings = settings;
     }
 
     clearSetting() {
         this.ipcRender.send('/setting/clear');
+        this.reset();
     }
 }

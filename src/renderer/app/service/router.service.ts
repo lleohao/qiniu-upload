@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { BaseService } from './base.service';
@@ -6,11 +6,13 @@ import { SettingService } from './setting.service';
 
 @Injectable()
 export class RouterService extends BaseService implements CanActivate {
-    constructor(private settingService: SettingService, private router: Router) {
+    constructor(private settingService: SettingService, private router: Router, private zone: NgZone) {
         super();
 
         this.ipcRender.on('/open/setting', (e) => {
-            this.router.navigateByUrl('/setting');
+            this.zone.run(() => {
+                this.router.navigateByUrl('/setting');
+            });
         });
     }
 
