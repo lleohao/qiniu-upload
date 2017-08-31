@@ -1,19 +1,9 @@
-# dragUpload-qiniu
+# Qiniu-upload
 > 基于Electron和七牛的图片上传工具
 
-
-
-## 效果展示
-
-设置界面
-
-![设置界面](http://ofwqfk202.bkt.clouddn.com/qiniu-setting.png)
-
-上传演示
-
-![演示](http://ofwqfk202.bkt.clouddn.com/drag-demo.gif)
-
-
+<video autoplay loop>
+<source src="http://ofwqfk202.bkt.clouddn.com/qiniu-upload.webm">
+</video>
 
 ## 使用方法
 
