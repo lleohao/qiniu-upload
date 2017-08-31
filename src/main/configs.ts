@@ -16,7 +16,9 @@ class Config {
     };
     reflush = false;
 
-    constructor() {
+    constructor() { }
+
+    init() {
         if (electronSetting.has('certificate')) {
             this.setting = electronSetting.get('certificate');
         }
