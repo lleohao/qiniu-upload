@@ -30,6 +30,7 @@ function createWindow() {
     }
 
     CustomMenu();
+    configs.init();
 
     mainWin.on('closed', () => {
         mainWin = null;
