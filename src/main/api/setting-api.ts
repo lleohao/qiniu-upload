@@ -10,14 +10,12 @@ export interface Settings {
     domain: string;
 }
 
-api.add('/setting/save', (e, uid, settings) => {
+api.add('/setting/save', (e, settings) => {
     configs.save(settings);
-    e.sender.send(`/setting/save/${uid}`);
 });
 
-api.add('/setting/clear', (e, uid) => {
+api.add('/setting/clear', (e) => {
     configs.clear();
-    e.sender.send(`/setting/clear/${uid}`);
 });
 
 api.add('/setting/get', (e) => {

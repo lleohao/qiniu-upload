@@ -44,24 +44,10 @@ export class SettingService extends BaseService {
     }
 
     saveSetting(settings: Settings) {
-        const uid = this.uuid();
-        return new Promise((reslove, reject) => {
-            this.ipcRender.send('/setting/save', uid, settings);
-            this.ipcRender.once(`/setting/save/${uid}`, (e, code) => {
-                this.settings = settings;
-                reslove();
-            });
-        });
+        this.ipcRender.send('/setting/save', settings);
     }
 
     clearSetting() {
-        const uid = this.uuid();
-        return new Promise((reslove, reject) => {
-            this.ipcRender.send('/setting/clear', uid);
-            this.ipcRender.once(`/setting/clear/${uid}`, (e, code) => {
-                this.reset();
-                reslove();
-            });
-        });
+        this.ipcRender.send('/setting/clear');
     }
 }

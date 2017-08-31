@@ -20,16 +20,10 @@ export class SettingComponent implements OnInit {
     }
 
     saveSetting() {
-        this.settingSerivce.saveSetting(this.model.getSetting())
-            .then(() => {
-                alert('保存配置成功');
-            });
+        this.settingSerivce.saveSetting(this.model.getSetting());
     }
 
     clearSetting() {
-        this.settingSerivce.clearSetting()
-            .then(() => {
-                alert('清除配置成功');
-            });
+        this.settingSerivce.clearSetting();
     }
 }
