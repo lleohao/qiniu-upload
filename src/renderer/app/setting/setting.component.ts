@@ -9,7 +9,7 @@ import { SettingService } from '../service/setting.service';
     styleUrls: ['./setting.component.scss']
 })
 export class SettingComponent implements OnInit {
-    private model: Setting;
+    model: Setting;
 
     constructor(private settingSerivce: SettingService) {
         this.model = new Setting();
