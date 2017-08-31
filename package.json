@@ -1,6 +1,6 @@
 {
     "name": "Upload",
-    "version": "0.0.2",
+    "version": "1.0.0",
     "license": "MIT",
     "author": "lleohao <lleohao@hotmail.com>",
     "description": "A file upload app for qiniu",
