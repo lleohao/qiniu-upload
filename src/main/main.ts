@@ -1,14 +1,13 @@
-import { app, BrowserWindow, ipcMain, Menu } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron';
 import * as path from 'path';
 import configs from './configs';
 
-import { CopyService } from './service';
+import { CustomMenu } from './service';
 import { isDev } from './utils';
 
 // Init project
 import './api/'; // 导入api
-CopyService();
-
+CustomMenu();    // 定义菜单栏
 
 let mainWin: Electron.BrowserWindow;
 

@@ -1,1 +1,1 @@
-export { CopyService } from './copy';
+export { CustomMenu } from './menu';

@@ -1,11 +1,16 @@
-import { app, Menu } from 'electron';
+import { app, Menu, shell, webContents } from 'electron';
 
-export const CopyService = () => {
+export const CustomMenu = () => {
     if (process.platform !== 'darwin') {
         const template = [{
             label: 'Application',
             submenu: [
                 { label: 'About Application', selector: 'orderFrontStandardAboutPanel:' },
+                {
+                    label: 'Preferences...', accelerator: 'Command+,', click: function () {
+                        webContents.getFocusedWebContents().send('/open/setting');
+                    }
+                },
                 { type: 'separator' },
                 { label: 'Quit', accelerator: 'Command+Q', click: function () { app.quit(); } }
             ]
@@ -19,6 +24,16 @@ export const CopyService = () => {
                 { label: 'Copy', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
                 { label: 'Paste', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
                 { label: 'Select All', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' }
+            ]
+        },
+        {
+            label: 'Help',
+            submenu: [
+                {
+                    label: 'Document', click: function () {
+                        shell.openExternal('https://github.com/lleohao/dragUpload-qiniu/blob/master/help.md');
+                    }
+                }
             ]
         }];
         Menu.setApplicationMenu(Menu.buildFromTemplate(template as Electron.MenuItemConstructorOptions[]));
