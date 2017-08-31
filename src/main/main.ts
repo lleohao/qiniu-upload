@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain, Menu, shell } from 'electron';
+
 import * as path from 'path';
 import configs from './configs';
 
@@ -7,7 +8,6 @@ import { isDev } from './utils';
 
 // Init project
 import './api/'; // 导入api
-CustomMenu();    // 定义菜单栏
 
 let mainWin: Electron.BrowserWindow;
 
@@ -26,6 +26,8 @@ function createWindow() {
     } else {
         mainWin.loadURL(`file://${path.resolve(__dirname, 'dist/index.html')}`);
     }
+
+    CustomMenu();
 
     mainWin.on('closed', () => {
         mainWin = null;

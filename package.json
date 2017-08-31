@@ -1,7 +1,9 @@
 {
-    "name": "drag-upload-qiniu",
+    "name": "Upload",
     "version": "0.0.2",
     "license": "MIT",
+    "author": "lleohao <lleohao@hotmail.com>",
+    "description": "A file upload app for qiniu",
     "scripts": {
         "ng": "ng",
         "watch:main": "tsc -p ./src/main/tsconfig.main.json -w",
@@ -9,7 +11,8 @@
         "start": "NODE_ENV=development nodemon --watch out --exec './node_modules/.bin/electron' ./out/main.js",
         "build": "ng build && npm run dist",
         "pack": "electron-builder -m --dir",
-        "dist": "electron-builder -m"
+        "dist": "electron-builder -m",
+        "postinstall": "electron-builder install-app-deps"
     },
     "main": "out/main.js",
     "private": true,
