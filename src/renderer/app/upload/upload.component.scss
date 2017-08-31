@@ -1,0 +1,100 @@
+.upload-wrap {
+    padding: 0 48px 48px;
+    height: calc(100% - 48px);
+    .upload-area {
+        position: relative;
+        height: 100%;
+        border: 2px dashed #ccc;
+        border-radius: 2px;
+        transition: border-color .3s .05s;
+        .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            color: #999;
+            text-align: center;
+            transition: color .3s .05s;
+            transform: translateX(-50%) translateY(-50%);
+            pointer-events: none;
+            .btn {
+                display: none;
+            }
+            .icon-upload {
+                font-size: 8rem;
+            }
+            p {
+                line-height: 1.5;
+                &.big {
+                    font-weight: 700;
+                    font-size: 2rem;
+                }
+                &.small {
+                    color: #999999;
+                    font-size: .75rem;
+                    a {
+                        position: relative;
+                        color: #b6d0e3;
+                        text-decoration: none;
+                        pointer-events: all;
+                    }
+                }
+            }
+        }
+        &.inline {
+            height: 56px;
+            .center {
+                position: relative;
+                padding-left: 16px;
+                text-align: left;
+                .icon-upload,
+                .small {
+                    display: none;
+                }
+                .btn {
+                    display: inline-block;
+                }
+                p {
+                    display: inline;
+                    text-transform: lowercase;
+                    font-size: 1rem;
+                }
+                .btn+p:before {
+                    content: " or ";
+                }
+            }
+        }
+        &.drag-over {
+            border: 2px solid #0789cf;
+            .center {
+                color: #0789cf;
+            }
+        }
+    }
+    .progerss-area{
+        overflow: auto;
+        margin-bottom: 16px;
+        padding-right: 8px;
+        height: calc(100% - 56px);
+
+        ul {
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid #666666;
+        }
+
+        &::-webkit-scrollbar{
+            width: 10px;
+            height: 10px;
+        }
+        &::-webkit-scrollbar-corner{
+            background-color: #535353;
+        }
+        &::-webkit-scrollbar-thumb{
+            border-radius: 5px;
+            background-color: #ccc;
+        } 
+        &::-webkit-scrollbar-track{
+            background: 0 0;
+        }
+    }
+}

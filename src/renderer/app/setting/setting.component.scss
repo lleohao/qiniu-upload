@@ -1,0 +1,27 @@
+.wrap.setting {
+    .field {
+        padding: .75rem 1.25rem;
+        &>label {
+            display: block;
+            margin-bottom: 1rem;
+        }
+        &>input {
+            width: 100%;
+            border: 1px solid #efefef;
+            background: #fff;
+            border-radius: 2px;
+            font-size: 14px;
+            padding: 8px 16px;
+            &:hover {
+                border-color: #e3e3e3;
+            }
+            &.ng-touched.ng-invalid {
+                border: 1px solid #a94442;
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075)
+            }
+        }
+        &:last-child {
+            text-align: right;
+        }
+    }
+}

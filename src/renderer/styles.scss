@@ -1,0 +1,55 @@
+/* You can add global styles to this file, and also import other style files */
+@import "assets/iconfont/iconfont.css";
+@import "assets/reset.css";
+.wrap {
+    padding: 0 16px 16px;
+    height: calc(100% - 48px);
+    background-color: #fff;
+}
+
+.info {
+    margin-bottom: 1rem;
+    padding: .75rem 1.25rem;
+    border: 1px solid transparent;
+    border-color: #b8daff;
+    border-radius: .25rem;
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.btn {
+    padding: 6px 16px;
+    border: 1px solid #0167c6;
+    border-radius: 2px;
+    background: #0174df;
+    color: #fff;
+    text-align: center;
+    font-size: 1rem;
+    cursor: pointer;
+    pointer-events: all;
+    &.btn-grey {
+        border: 1px solid #ccc;
+        background-color: #fff;
+        color: #666666;
+        &:hover {
+            border-color: #999;
+            background: #fff;
+        }
+    }
+    &:hover {
+        border-color: #0181f8;
+        background: #0181f8;
+    }
+    &:disabled {
+        opacity: .65;
+        cursor: not-allowed;
+    }
+    &:active,
+    &:focus {
+        outline: none;
+    }
+}
+
+.iconfont {
+    cursor: pointer;
+}

@@ -1,0 +1,45 @@
+@import "../../../assets/mixin.scss";
+
+li{
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    padding: 0 8px;
+    height: 48px;
+    border-bottom: 1px solid #666;
+    line-height: 48px;
+
+    div:first-child {
+        flex-grow: 1;
+        color: #0789cf;
+        cursor: pointer;
+
+        user-select: none;
+        @include ellipsis;
+    }
+
+    div:last-child {
+        min-width: 94px;
+        text-align: right;
+
+        &.completed {
+            animation:completed .6s ease-in-out .5s forwards;
+        }
+    }
+    
+    app-progress {
+        margin-left: 4px;
+    }
+}
+
+@keyframes completed {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(40px);
+    }
+    100% {
+        transform: translateX(34px);
+    }
+}

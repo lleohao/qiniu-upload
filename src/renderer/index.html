@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:svg="http://www.w3.org/2000/svg">
+
+<head>
+    <meta charset="utf-8">
+    <title>Upload</title>
+    <base href="./">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+
+<body>
+    <app-root></app-root>
+    <script>
+        // fix electron 
+        const electron = require('electron');
+
+        // fix drop
+        document.ondragover = document.ondrop = (ev) => {
+            ev.preventDefault()
+        }
+
+        document.body.ondrop = (ev) => {
+            ev.preventDefault()
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+<li>
+    <div title="点击可以获取外链地址"
+         (click)="getOuterLink()">
+        <app-file-icon [ext]="progressItem.ext"></app-file-icon>{{fileName}}
+    </div>
+    <div [class.completed]="progressItem.progress === 100">{{sizeTxt}}
+        <app-progress [progress]="progressItem.progress"></app-progress>
+    </div>
+</li>

@@ -1,0 +1,10 @@
+.progress {
+    display: inline-block;
+    vertical-align: -webkit-baseline-middle;
+    .progress-circle {
+        transition: .2s ease-in-out stroke-dasharray;
+        transform: matrix(0,-1,1,0,0,24);
+
+        stroke-dasharray: 0 73px;
+    }
+}

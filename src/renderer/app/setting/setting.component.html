@@ -1,0 +1,24 @@
+<div class="wrap setting">
+    <form class="form setting-form" (ngSubmit)="saveSetting()" #settingForm="ngForm">
+        <div class="field">
+            <label for="ak">accessKey</label><input type="text" required id="ak"
+                name="ak" [(ngModel)]="model.ak" placeholder="请输入accessKey">
+        </div>
+        <div class="field">
+            <label for="sk">secretKey</label><input type="password" required id="sk"
+                name="sk" [(ngModel)]="model.sk" placeholder="请输入secretKey">
+        </div>
+        <div class="field">
+            <label for="scope">空间名称</label><input type="text" required id="scope"
+                name="scope" [(ngModel)]="model.scope" placeholder="请输入空间名称">
+        </div>
+        <div class="field">
+            <label for="domain">空间域名</label><input type="text" required id="domain"
+                name="domain" [(ngModel)]="model.domain" placeholder="请输入空间域名">
+        </div>
+        <div class="field">
+            <button type="submit" [disabled]="!settingForm.form.valid" class="btn">保存设置</button>
+            <button type="reset" (click)="clearSetting()" class="btn">清空配置</button>
+        </div>
+    </form>
+</div>

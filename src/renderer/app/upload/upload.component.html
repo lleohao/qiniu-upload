@@ -1,0 +1,25 @@
+<div class="upload-wrap">
+    <div class="progerss-area"
+         *ngIf="this.inline">
+        <ul>
+            <app-upload-details *ngFor="let progressItem of progressList"
+                                [progressItem]="progressItem"></app-upload-details>
+        </ul>
+    </div>
+    <div class="upload-area"
+         [class.inline]="this.inline"
+         [class.drag-over]="this.dragOver"
+         (drop)="$event.preventDefault();this.drop($event)"
+         (dragleave)="$event.preventDefault();this.dragOver=false;"
+         (dragenter)="$event.preventDefault();this.dragOver=true;">
+        <div class="center">
+            <i class="iconfont icon-upload"></i>
+            <button class="btn btn-grey"
+                    (click)="this.selectFile()">Browse your files</button>
+            <p class="big">Drag & Drop</p>
+            <p class="big">your files here</p>
+            <p class="small">or <a href="javascript: void(0)"
+                   (click)="this.selectFile()">browse.</a></p>
+        </div>
+    </div>
+</div>
