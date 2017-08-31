@@ -13,8 +13,8 @@ let mainWin: Electron.BrowserWindow;
 
 function createWindow() {
     mainWin = new BrowserWindow({
-        width: 800,
-        height: 800,
+        width: 680,
+        height: 500,
         title: '七牛上传工具'
     });
     const webContents = mainWin.webContents;

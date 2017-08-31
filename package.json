@@ -6,8 +6,12 @@
         "ng": "ng",
         "watch:main": "tsc -p ./src/main/tsconfig.main.json -w",
         "watch:renderer": "ng serve",
-        "start": "NODE_ENV=development nodemon --watch out --exec './node_modules/.bin/electron' ./out/main.js"
+        "start": "NODE_ENV=development nodemon --watch out --exec './node_modules/.bin/electron' ./out/main.js",
+        "build": "ng build && npm run dist",
+        "pack": "electron-builder -m --dir",
+        "dist": "electron-builder -m"
     },
+    "main": "out/main.js",
     "private": true,
     "dependencies": {
         "@angular/animations": "^4.2.4",
@@ -18,6 +22,7 @@
         "@angular/http": "^4.2.4",
         "@angular/platform-browser": "^4.2.4",
         "@angular/platform-browser-dynamic": "^4.2.4",
+        "@angular/platform-server": "^4.3.6",
         "@angular/router": "^4.2.4",
         "core-js": "^2.4.1",
         "electron-settings": "^3.1.1",
@@ -27,7 +32,7 @@
     },
     "devDependencies": {
         "@angular/cli": "1.3.1",
-        "@angular/compiler-cli": "^4.2.4",
+        "@angular/compiler-cli": "^4.3.6",
         "@angular/language-service": "^4.2.4",
         "@types/node": "~6.0.60",
         "codelyzer": "~3.1.1",
