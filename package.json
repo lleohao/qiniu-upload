@@ -9,7 +9,7 @@
         "watch:main": "tsc -p ./src/main/tsconfig.main.json -w",
         "watch:renderer": "ng serve",
         "start": "NODE_ENV=development nodemon --watch out --exec './node_modules/.bin/electron' ./out/main.js",
-        "build": "ng build && tsc -p ./src/main/tsconfig.main.json && npm run dist",
+        "build": "ng build --prod && tsc -p ./src/main/tsconfig.main.json && npm run dist",
         "pack": "electron-builder -m --dir",
         "dist": "electron-builder -m",
         "postinstall": "electron-builder install-app-deps"
