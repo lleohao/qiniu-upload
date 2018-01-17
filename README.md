@@ -1,5 +1,7 @@
 # Qiniu-upload
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/lleohao/qiniu-upload.svg)](https://greenkeeper.io/)
+
 > 基于Electron和七牛的图片上传工具
 >
 > GIF预览效果不好, 可以查看[视频预览](http://ofwqfk202.bkt.clouddn.com/qiniu-upload.webm)
