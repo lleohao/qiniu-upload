@@ -40,7 +40,7 @@
         "@angular/language-service": "^4.4.6",
         "@types/node": "^6.0.96",
         "codelyzer": "~3.1.1",
-        "electron": "^1.8.8",
+        "electron": "^9.4.0",
         "electron-builder": "^19.55.3",
         "mockjs": "^1.0.1-beta3",
         "nodemon": "^1.14.11",
